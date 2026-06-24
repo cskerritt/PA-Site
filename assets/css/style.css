@@ -262,6 +262,21 @@ p { margin: 0 0 1rem; }
 .office-card .card-link { color: var(--navy-600); font-weight: 600; font-size: .92rem; }
 .office-card:hover .card-link { color: var(--brand-500); }
 @media (max-width: 760px) { .office-grid { grid-template-columns: 1fr; } }
+
+/* ---------- Credential / affiliation strip ---------- */
+.credstrip { padding: 2.6rem 0; }
+.credential-strip {
+  list-style: none; margin: 1.2rem 0 0; padding: 0; display: flex; flex-wrap: wrap;
+  align-items: center; justify-content: center; gap: 1.6rem 2.6rem;
+}
+.credential-strip li { display: flex; align-items: center; }
+.credential-strip img {
+  height: 42px; width: auto; max-width: 150px; object-fit: contain;
+  filter: grayscale(1); opacity: .62; transition: filter .2s ease, opacity .2s ease;
+}
+.credential-strip img:hover { filter: grayscale(0); opacity: 1; }
+.cred-issuer { color: var(--slate); font-size: .82rem; font-weight: 400; }
+@media (max-width: 600px) { .credential-strip { gap: 1.1rem 1.6rem; } .credential-strip img { height: 34px; } }
 .aside-card { background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); padding: 1.5rem; box-shadow: var(--shadow-sm); }
 .aside-card h3 { color: var(--navy-900); }
 .aside-dl { display: grid; grid-template-columns: 1fr; gap: .1rem; margin: 0 0 1.2rem; }
@@ -349,6 +364,11 @@ p { margin: 0 0 1rem; }
 .footer-about p { margin: .8rem 0; max-width: 36ch; }
 .footer-creds { color: var(--brand-400) !important; font-weight: 600; font-size: .88rem; }
 .footer-linkedin { color: var(--brand-400); font-weight: 600; }
+.footer-links { margin: .8rem 0 .5rem; font-size: .9rem; }
+.footer-links a { color: #b9c8da; }
+.footer-links a:hover { color: var(--brand-400); }
+.footer-social { display: flex; gap: 1.1rem; margin: .3rem 0 0; }
+.footer-social a { color: var(--brand-400); font-weight: 600; font-size: .9rem; }
 .footer-contact span { color: var(--slate-300); font-size: .82rem; }
 .footer-addr { color: #b9c8da; line-height: 1.5; }
 .footer-bottom { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,.12); font-size: .85rem; color: var(--slate-300); }

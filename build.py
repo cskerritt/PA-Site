@@ -110,6 +110,21 @@ OFFICES = [
 ]
 OFFICE_CITIES = " · ".join(o["city"] for o in OFFICES)
 
+# Professional memberships & third-party expert listings (monochrome credibility
+# strip). Shown as memberships/listings — not endorsements.
+AFFILIATIONS = [
+    ("association-ABVE-logo.webp", "American Board of Vocational Experts"),
+    ("association-AREA-logo.webp", "American Rehabilitation Economics Association"),
+    ("association-IARP-logo.webp", "International Association of Rehabilitation Professionals"),
+    ("association-CRCC-logo.webp", "Commission on Rehabilitation Counselor Certification"),
+    ("association-NBCC-logo.webp", "National Board for Certified Counselors"),
+    ("association-ICHCC-logo.webp", "International Commission on Health Care Certification"),
+    ("association-SEAK-logo.webp", "SEAK Expert Witness Directory"),
+    ("association-JurisPro-logo.webp", "JurisPro Expert Witness Directory"),
+    ("association-ALM-Law-logo.webp", "ALM / Law.com Expert Witness"),
+    ("association-Psychology-Today-logo.webp", "Psychology Today"),
+]
+
 # --------------------------------------------------------------------------- #
 #  HTML helpers
 # --------------------------------------------------------------------------- #
@@ -227,7 +242,12 @@ def footer():
       <p>Objective, defensible vocational expert and life care planning opinions for
          plaintiff and defense counsel across the United States and Canada.</p>
       <p class="footer-creds">{SITE['principal']}, {SITE['principal_creds']}</p>
-      <a class="footer-linkedin" href="{SITE['linkedin']}" rel="noopener" target="_blank">LinkedIn &rarr;</a>
+      <p class="footer-links"><a href="/about/">About</a> &middot; <a href="/credentials/">Credentials</a> &middot; <a href="/offices/">Offices</a></p>
+      <p class="footer-social">
+        <a href="{SITE['linkedin']}" rel="noopener" target="_blank">LinkedIn</a>
+        <a href="{SITE['facebook']}" rel="noopener" target="_blank">Facebook</a>
+        <a href="{SITE['x']}" rel="noopener" target="_blank">X</a>
+      </p>
     </div>
     <div class="footer-col">
       <h3>Services</h3>
@@ -455,6 +475,21 @@ def card_grid(items, icon_map=None):
     return f'<div class="card-grid">{cards}\n    </div>'
 
 
+def credential_strip(title="Memberships &amp; professional listings", alt=False):
+    logos = "".join(
+        f'<li><img src="/assets/img/brand/{f}" alt="{n}" loading="lazy"></li>'
+        for f, n in AFFILIATIONS
+    )
+    cls = "section section-alt" if alt else "section"
+    return f"""
+<section class="{cls} credstrip">
+  <div class="container center">
+    <p class="eyebrow">{title}</p>
+    <ul class="credential-strip">{logos}</ul>
+  </div>
+</section>"""
+
+
 # ---- HOME ----------------------------------------------------------------- #
 
 def home_body():
@@ -535,6 +570,8 @@ def home_body():
 <section class="stats-band">
   <div class="container stats-grid">{stat_html}</div>
 </section>
+
+{credential_strip(alt=True)}
 
 <section class="section">
   <div class="container">
@@ -617,7 +654,7 @@ def about_body():
 {page_hero("About", "Jason C. Purinton, " + SITE['principal_creds'],
            "A licensed counselor and registered nurse who is also a board-certified vocational expert "
            "&mdash; translating injury, disability, and loss into objective, defensible opinions.",
-           secondary=("View Credentials", "#credentials"))}
+           secondary=("View Credentials", "/credentials/"))}
 
 <section class="section">
   <div class="container split">
@@ -686,6 +723,7 @@ def about_body():
 </section>
 
 {faq_html}
+{credential_strip()}
 {cta_band()}
 """
     return body, [person_schema(), org_schema(), faq_schema]
@@ -1411,6 +1449,88 @@ def offices_hub_body():
     return body, [org_schema()]
 
 
+def credentials_body():
+    primary = [
+        ("LPC", "Licensed Professional Counselor", "Missouri Division of Professional Registration"),
+        ("CRC", "Certified Rehabilitation Counselor", "Commission on Rehabilitation Counselor Certification"),
+        ("CVE", "Certified Vocational Evaluator", "Commission on Rehabilitation Counselor Certification"),
+        ("ABVE/F", "Fellow &amp; Board Certified", "American Board of Vocational Experts (2025)"),
+        ("IPEC", "International Psychometric Evaluator, Certified", "American Board of Vocational Experts (2025)"),
+        ("FVE", "Forensic Vocational Expert", "American Rehabilitation Economics Association"),
+        ("NCC", "National Certified Counselor", "National Board for Certified Counselors"),
+        ("RN", "Registered Nurse", "State of Missouri"),
+    ]
+    prim_html = "".join(
+        f'<li><span class="cred-abbr">{ab}</span><span class="cred-full"><strong>{full}</strong><br><span class="cred-issuer">{iss}</span></span></li>'
+        for ab, full, iss in primary
+    )
+    state_quals = [
+        ("Certified Rehabilitation Provider", "Missouri Division of Workers' Compensation"),
+        ("Qualified Rehabilitation Professional", "Kansas Division of Workers' Compensation"),
+        ("Qualified Vocational Rehabilitation Counselor &amp; Job Placement Specialist", "Nebraska Workers' Compensation Court"),
+        ("Certified Trauma Professional", "Evergreen Certifications"),
+        ("Certified Critical Incident Stress Debriefer", "Ontario Critical Incident Stress Foundation"),
+    ]
+    state_html = "".join(f'<li>{icon("check")}<div><strong>{t}</strong><p>{d}</p></div></li>' for t, d in state_quals)
+
+    leadership = [
+        ("American Rehabilitation Economics Association", "Board of Directors, President-Elect (2025); Forensic Vocational Expert"),
+        ("American Board of Vocational Experts", "Fellow (2025); Member"),
+        ("International Association of Rehabilitation Professionals", "Board of Directors, Forensic Section Representative (2022&ndash;2024); Member"),
+        ("Association for Assessment and Research in Counseling", "Member"),
+    ]
+    lead_html = "".join(f'<li>{icon("check")}<div><strong>{n}</strong><p>{r}</p></div></li>' for n, r in leadership)
+
+    edu = [
+        ("M.S., Rehabilitation Counseling", "Emporia State University — 2018&ndash;2019, Phi Kappa Phi"),
+        ("B.S.N., Nursing (Registered Nurse)", "MidAmerica Nazarene University — 2016&ndash;2017"),
+        ("E.M.T.", "Johnson County Community College — 2014"),
+        ("B.S., Business (Communication Studies)", "University of Kansas — 1993&ndash;1997"),
+    ]
+    edu_html = "".join(f'<li><strong>{d}</strong><span>{s}</span></li>' for d, s in edu)
+
+    body = f"""
+{page_hero("Credentials", "Credentials, certifications &amp; affiliations",
+           "Jason C. Purinton holds clinical, rehabilitation, and forensic credentials across multiple "
+           "states &mdash; the foundation for objective, defensible vocational and life care planning opinions.")}
+
+<section class="section">
+  <div class="container split">
+    <div class="split-main">
+      <h2>Professional credentials</h2>
+      <ul class="cred-list">{prim_html}</ul>
+
+      <h2>State qualifications &amp; additional certifications</h2>
+      <ul class="incl-list">{state_html}</ul>
+
+      <h2>Memberships &amp; leadership</h2>
+      <ul class="incl-list">{lead_html}</ul>
+
+      <h2>Education</h2>
+      <ul class="edu-list">{edu_html}</ul>
+    </div>
+    <aside class="split-aside">
+      <div class="aside-card">
+        <h3>At a glance</h3>
+        <dl class="aside-dl">
+          <dt>Credentials</dt><dd>{SITE['principal_creds']}</dd>
+          <dt>Licensure</dt><dd>Missouri, Kansas, Nebraska</dd>
+          <dt>SSA hearings</dt><dd>3,000+ testified</dd>
+          <dt>Leadership</dt><dd>AREA President-Elect (2025)</dd>
+        </dl>
+        <a href="/contact/" class="btn btn-block">Request a Consultation</a>
+        <a href="/about/" class="card-link">About Jason &rarr;</a>
+      </div>
+    </aside>
+  </div>
+</section>
+
+{credential_strip(alt=True)}
+{cta_band()}
+"""
+    return body, [person_schema(), org_schema()]
+
+
 # --------------------------------------------------------------------------- #
 #  Locations (programmatic local SEO)
 # --------------------------------------------------------------------------- #
@@ -1945,6 +2065,14 @@ def build_pages():
                           f"{o['region_full']} attorneys — the {o['city']} office of Purinton Analytics.",
                           active="/offices/", body=b, schema=s,
                           breadcrumb=make_breadcrumb(path, f"{o['city']} Office")))
+
+    b, s = credentials_body()
+    pages.append(dict(path="/credentials/",
+                      title="Credentials, Certifications & Affiliations | Purinton Analytics",
+                      description="Jason C. Purinton's credentials — LPC, CRC, CVE, ABVE/F, IPEC, FVE, RN — "
+                      "with state qualifications in Missouri, Kansas, and Nebraska, memberships, and leadership.",
+                      active="/credentials/", body=b, schema=s,
+                      breadcrumb=make_breadcrumb("/credentials/", "Credentials")))
 
     b, s = contact_body()
     pages.append(dict(path="/contact/",
