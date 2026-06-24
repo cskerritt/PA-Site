@@ -277,6 +277,13 @@ p { margin: 0 0 1rem; }
 .credential-strip img:hover { filter: grayscale(0); opacity: 1; }
 .cred-issuer { color: var(--slate); font-size: .82rem; font-weight: 400; }
 @media (max-width: 600px) { .credential-strip { gap: 1.1rem 1.6rem; } .credential-strip img { height: 34px; } }
+
+/* ---------- Insights / articles ---------- */
+.card-meta { font-size: .8rem; color: var(--slate-300); text-transform: uppercase; letter-spacing: .06em; font-weight: 600; margin: 0 0 .5rem; }
+.article-meta { color: #c4d4e6; font-size: .92rem; margin-top: 1rem; }
+.article h2 { margin-top: 2.2rem; }
+.article h2:first-child { margin-top: 0; }
+.article p { color: #2b3a4d; font-size: 1.05rem; }
 .aside-card { background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); padding: 1.5rem; box-shadow: var(--shadow-sm); }
 .aside-card h3 { color: var(--navy-900); }
 .aside-dl { display: grid; grid-template-columns: 1fr; gap: .1rem; margin: 0 0 1.2rem; }

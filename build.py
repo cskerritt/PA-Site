@@ -19,6 +19,7 @@ from datetime import date
 from content_practice import (
     NEW_PRACTICE_AREAS, NEW_PRACTICE_ICONS, NEW_PRACTICE_TITLES, NEW_DETAILS,
 )
+from content_insights import ARTICLES
 
 # --------------------------------------------------------------------------- #
 #  Site-wide configuration
@@ -60,7 +61,7 @@ NAV = [
     ("Services", "/services/"),
     ("Practice Areas", "/practice-areas/"),
     ("Offices", "/offices/"),
-    ("Locations", "/locations/"),
+    ("Insights", "/insights/"),
     ("Contact", "/contact/"),
 ]
 
@@ -242,7 +243,7 @@ def footer():
       <p>Objective, defensible vocational expert and life care planning opinions for
          plaintiff and defense counsel across the United States and Canada.</p>
       <p class="footer-creds">{SITE['principal']}, {SITE['principal_creds']}</p>
-      <p class="footer-links"><a href="/about/">About</a> &middot; <a href="/credentials/">Credentials</a> &middot; <a href="/offices/">Offices</a></p>
+      <p class="footer-links"><a href="/about/">About</a> &middot; <a href="/credentials/">Credentials</a> &middot; <a href="/offices/">Offices</a> &middot; <a href="/insights/">Insights</a> &middot; <a href="/locations/">Locations</a></p>
       <p class="footer-social">
         <a href="{SITE['linkedin']}" rel="noopener" target="_blank">LinkedIn</a>
         <a href="{SITE['facebook']}" rel="noopener" target="_blank">Facebook</a>
@@ -1531,6 +1532,86 @@ def credentials_body():
     return body, [person_schema(), org_schema()]
 
 
+# ---- INSIGHTS / ARTICLES -------------------------------------------------- #
+
+def _fmt_date(iso):
+    months = ["January", "February", "March", "April", "May", "June", "July",
+              "August", "September", "October", "November", "December"]
+    y, m, d = iso.split("-")
+    return f"{months[int(m) - 1]} {int(d)}, {y}"
+
+
+def article_schema(a):
+    url = f"{SITE['domain']}/insights/{a['slug']}/"
+    return (
+        '{"@context":"https://schema.org","@type":"Article",'
+        '"headline":"%s","description":"%s","datePublished":"%s","dateModified":"%s",'
+        '"author":{"@type":"Person","name":"%s","honorificSuffix":"%s","url":"%s/about/"},'
+        '"publisher":{"@id":"%s/#organization"},'
+        '"mainEntityOfPage":{"@type":"WebPage","@id":"%s"}}'
+        % (a["title"].replace('"', "'"), a["dek"].replace('"', "'"), a["date"], a["date"],
+           SITE["principal"], SITE["principal_creds"], SITE["domain"], SITE["domain"], url)
+    )
+
+
+def insights_index_body():
+    cards = ""
+    for a in ARTICLES:
+        cards += f"""
+      <a class="card" href="/insights/{a['slug']}/">
+        <p class="card-meta">{_fmt_date(a['date'])} &middot; {a['read']}</p>
+        <h3>{a['title']}</h3>
+        <p>{a['dek']}</p>
+        <span class="card-link">Read article &rarr;</span>
+      </a>"""
+    body = f"""
+{page_hero("Insights", "Vocational &amp; life care planning insights",
+           "Plain-language explainers on how objective vocational and life care planning opinions are "
+           "built &mdash; for attorneys, insurers, and anyone navigating an injury or disability claim.")}
+
+<section class="section">
+  <div class="container">
+    <div class="card-grid">{cards}
+    </div>
+  </div>
+</section>
+
+{cta_band()}
+"""
+    schema = (
+        '{"@context":"https://schema.org","@type":"Blog","name":"Purinton Analytics Insights",'
+        '"url":"%s/insights/","publisher":{"@id":"%s/#organization"}}' % (SITE["domain"], SITE["domain"])
+    )
+    return body, [org_schema(), schema]
+
+
+def article_body(a):
+    secs = ""
+    for h2, paras in a["sections"]:
+        secs += f"<h2>{h2}</h2>" + "".join(f"<p>{p}</p>" for p in paras)
+    faq_html, faq_schema = faq_block("Frequently asked questions", a["faqs"])
+    body = f"""
+<section class="page-hero">
+  <div class="container">
+    <p class="eyebrow">Insights</p>
+    <h1>{a['title']}</h1>
+    <p class="lead">{a['dek']}</p>
+    <p class="article-meta">{_fmt_date(a['date'])} &middot; {a['read']} &middot; By {SITE['principal']}, {SITE['principal_creds']}</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container narrow article">
+    {secs}
+  </div>
+</section>
+
+{faq_html}
+{cta_band()}
+"""
+    return body, [org_schema(), article_schema(a), faq_schema]
+
+
 # --------------------------------------------------------------------------- #
 #  Locations (programmatic local SEO)
 # --------------------------------------------------------------------------- #
@@ -2074,6 +2155,23 @@ def build_pages():
                       active="/credentials/", body=b, schema=s,
                       breadcrumb=make_breadcrumb("/credentials/", "Credentials")))
 
+    # Insights index + articles
+    b, s = insights_index_body()
+    pages.append(dict(path="/insights/",
+                      title="Insights — Vocational Expert & Life Care Planning | Purinton Analytics",
+                      description="Plain-language explainers on how objective vocational and life care "
+                      "planning opinions are built, from Purinton Analytics.",
+                      active="/insights/", body=b, schema=s,
+                      breadcrumb=make_breadcrumb("/insights/", "Insights")))
+    for a in ARTICLES:
+        path = f"/insights/{a['slug']}/"
+        b, s = article_body(a)
+        pages.append(dict(path=path,
+                          title=f"{a['title']} | Purinton Analytics",
+                          description=a["dek"],
+                          active="/insights/", body=b, schema=s,
+                          breadcrumb=make_breadcrumb(path, a["title"])))
+
     b, s = contact_body()
     pages.append(dict(path="/contact/",
                       title="Contact & Request a Consultation | Purinton Analytics",
@@ -2194,6 +2292,9 @@ def write_meta_files(pages):
         f"- [{o['city']}, {o['region']}]({SITE['domain']}/offices/{o['slug']}/): {o['blurb']}"
         for o in OFFICES
     )
+    insight_lines = "\n".join(
+        f"- [{a['title']}]({SITE['domain']}/insights/{a['slug']}/): {a['dek']}" for a in ARTICLES
+    )
     llms = f"""# Purinton Analytics, LLC
 
 > Forensic vocational expert and life care planning practice providing objective, defensible
@@ -2226,8 +2327,12 @@ Meetings by appointment; remote evaluation, deposition, and trial testimony nati
 Purinton Analytics serves attorneys and insurers across {len(STATES)} states and {sum(len(s["cities"]) for s in STATES)}+ cities and towns. Remote evaluation, deposition, and trial testimony are available throughout.
 {chr(10).join(f"- [{s['name']}]({SITE['domain']}{s['path']}): vocational expert & life care planning services in {s['cities'][0]['name']}, {s['cities'][1]['name']}, {s['cities'][2]['name']}, and {len(s['cities'])-3}+ more communities." for s in STATES)}
 
+## Insights
+{insight_lines}
+
 ## About
-- [About Jason C. Purinton]({SITE['domain']}/about/): Credentials — Licensed Professional Counselor (LPC), Certified Rehabilitation Counselor (CRC), Certified Vocational Evaluator (CVE), Fellow of the American Board of Vocational Experts (ABVE/F), Forensic Vocational Expert (FVE), International Psychometric Evaluator Certified (IPEC).
+- [About Jason C. Purinton]({SITE['domain']}/about/): Credentials — Licensed Professional Counselor (LPC), Certified Rehabilitation Counselor (CRC), Certified Vocational Evaluator (CVE), Fellow of the American Board of Vocational Experts (ABVE/F), Forensic Vocational Expert (FVE), International Psychometric Evaluator Certified (IPEC), Registered Nurse (RN). Based in Kansas City, Missouri; offices in St. Louis, Denver, and Chicago. Board of Directors, President-Elect (2025) of the American Rehabilitation Economics Association.
+- [Credentials & Affiliations]({SITE['domain']}/credentials/): Full credentials, state qualifications (Missouri, Kansas, Nebraska), memberships, and leadership.
 """
     open(os.path.join(ROOT, "llms.txt"), "w").write(llms)
 
