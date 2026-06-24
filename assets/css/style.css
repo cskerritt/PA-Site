@@ -359,6 +359,89 @@ p { margin: 0 0 1rem; }
   body { font-size: 16px; }
 }
 
+/* ---------- City list (location pages) ---------- */
+.city-list {
+  list-style: none; padding: 0; margin: 1rem 0 1.5rem;
+  columns: 3; column-gap: 1.5rem;
+}
+.city-list li { break-inside: avoid; margin-bottom: .45rem; }
+.city-list a { color: var(--navy-700); font-size: .95rem; }
+.city-list a:hover { color: var(--gold-500); }
+@media (max-width: 760px) { .city-list { columns: 2; } }
+@media (max-width: 460px) { .city-list { columns: 1; } }
+
+/* ============================================================
+   Animations
+   ============================================================ */
+
+/* Animated nav underline */
+.main-nav a { position: relative; }
+.main-nav a::after {
+  content: ""; position: absolute; left: .85rem; right: .85rem; bottom: .35rem; height: 2px;
+  background: var(--gold-500); transform: scaleX(0); transform-origin: left; transition: transform .25s ease;
+  border-radius: 2px;
+}
+.main-nav a:hover::after, .main-nav a.active::after { transform: scaleX(1); }
+.nav-cta a::after { display: none; }
+
+/* Button sheen on hover */
+.btn { position: relative; overflow: hidden; }
+.btn::before {
+  content: ""; position: absolute; top: 0; left: -120%; width: 60%; height: 100%;
+  background: linear-gradient(110deg, transparent, rgba(255,255,255,.45), transparent);
+  transform: skewX(-18deg); transition: left .55s ease;
+}
+.btn:hover::before { left: 140%; }
+
+/* Card icon pop */
+.card-ico, .feature-ico { transition: transform .25s ease, background .25s ease, color .25s ease; }
+.card:hover .card-ico { transform: translateY(-3px) scale(1.06); background: var(--gold-100); color: var(--navy-800); }
+
+/* Scroll-reveal — only active when JS is present (no flash for no-JS) */
+@keyframes fadeUp { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
+
+.js .reveal,
+.js .card,
+.js .feature,
+.js .section-head,
+.js .stat,
+.js .steps > li,
+.js .faq-item,
+.js .incl-list > li,
+.js .cred-list > li,
+.js .edu-list > li,
+.js .aside-card,
+.js .pill,
+.js .legal > * {
+  opacity: 0; transform: translateY(22px);
+  transition: opacity .7s ease, transform .7s cubic-bezier(.2, .7, .2, 1);
+}
+.js .is-visible { opacity: 1 !important; transform: none !important; }
+
+/* Hero entrance (immediate, not scroll-bound) */
+.js .hero-copy > *, .js .hero-card { opacity: 0; animation: fadeUp .8s cubic-bezier(.2, .7, .2, 1) forwards; }
+.js .hero-copy > *:nth-child(1) { animation-delay: .05s; }
+.js .hero-copy > *:nth-child(2) { animation-delay: .15s; }
+.js .hero-copy > *:nth-child(3) { animation-delay: .25s; }
+.js .hero-copy > *:nth-child(4) { animation-delay: .35s; }
+.js .hero-copy > *:nth-child(5) { animation-delay: .45s; }
+.js .hero-card { animation-delay: .4s; }
+
+.js .page-hero .eyebrow, .js .page-hero h1, .js .page-hero .lead, .js .page-hero .hero-actions {
+  opacity: 0; animation: fadeUp .75s cubic-bezier(.2, .7, .2, 1) forwards;
+}
+.js .page-hero h1 { animation-delay: .08s; }
+.js .page-hero .lead { animation-delay: .18s; }
+.js .page-hero .hero-actions { animation-delay: .28s; }
+
+.stat-num { transition: color .3s ease; }
+
 @media (prefers-reduced-motion: reduce) {
-  * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+  .js .reveal, .js .card, .js .feature, .js .section-head, .js .stat, .js .steps > li,
+  .js .faq-item, .js .incl-list > li, .js .cred-list > li, .js .edu-list > li, .js .aside-card,
+  .js .pill, .js .legal > *, .js .hero-copy > *, .js .hero-card, .js .page-hero .eyebrow,
+  .js .page-hero h1, .js .page-hero .lead, .js .page-hero .hero-actions {
+    opacity: 1 !important; transform: none !important;
+  }
 }

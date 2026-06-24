@@ -28,4 +28,33 @@
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
   }
+
+  // Scroll-reveal with light per-group stagger
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var SEL = ".reveal, .card, .feature, .section-head, .stat, .steps > li, .faq-item, " +
+            ".incl-list > li, .cred-list > li, .edu-list > li, .aside-card, .pill, .legal > *";
+  var targets = Array.prototype.slice.call(document.querySelectorAll(SEL));
+
+  if (reduce || !("IntersectionObserver" in window)) {
+    targets.forEach(function (el) { el.classList.add("is-visible"); });
+    return;
+  }
+
+  var io = new IntersectionObserver(function (entries, obs) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting) return;
+      var el = entry.target;
+      // stagger by position among its siblings (capped)
+      var sibs = el.parentNode ? el.parentNode.children : [el];
+      var i = Array.prototype.indexOf.call(sibs, el);
+      el.style.transitionDelay = (Math.min(i, 7) * 70) + "ms";
+      el.classList.add("is-visible");
+      obs.unobserve(el);
+    });
+  }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
+
+  targets.forEach(function (el) {
+    // Elements already in view on load reveal immediately (no scroll needed)
+    io.observe(el);
+  });
 })();

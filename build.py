@@ -13,6 +13,7 @@ to any static host (GitHub Pages, Netlify, Cloudflare Pages, S3, etc.).
 import os
 import re
 import shutil
+import unicodedata
 from datetime import date
 
 # --------------------------------------------------------------------------- #
@@ -58,6 +59,7 @@ NAV = [
     ("About", "/about/"),
     ("Services", "/services/"),
     ("Practice Areas", "/practice-areas/"),
+    ("Locations", "/locations/"),
     ("Contact", "/contact/"),
 ]
 
@@ -120,9 +122,10 @@ def head(page):
         )
 
     return f"""<!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="no-js">
 <head>
 <meta charset="utf-8">
+<script>document.documentElement.className=document.documentElement.className.replace('no-js','js');</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{esc(title)}</title>
 <meta name="description" content="{esc(desc)}">
@@ -194,6 +197,7 @@ def header(active):
 def footer():
     svc = "".join(f'<li><a href="{h}">{n}</a></li>' for n, h, _ in SERVICES)
     pa = "".join(f'<li><a href="{h}">{n}</a></li>' for n, h, _ in PRACTICE_AREAS)
+    areas = "".join(f'<li><a href="{s["path"]}">{s["name"]}</a></li>' for s in STATES)
     return f"""
 <footer class="site-footer">
   <div class="container footer-grid">
@@ -211,6 +215,10 @@ def footer():
     <div class="footer-col">
       <h3>Practice Areas</h3>
       <ul>{pa}</ul>
+    </div>
+    <div class="footer-col">
+      <h3>Service Areas</h3>
+      <ul>{areas}</ul>
     </div>
     <div class="footer-col">
       <h3>Contact</h3>
@@ -1254,6 +1262,450 @@ def not_found_body():
 
 
 # --------------------------------------------------------------------------- #
+#  Locations (programmatic local SEO)
+# --------------------------------------------------------------------------- #
+
+def slugify(s):
+    s = unicodedata.normalize("NFKD", s).encode("ascii", "ignore").decode()
+    s = s.lower().replace("'", "").replace(".", "")
+    s = re.sub(r"[^a-z0-9]+", "-", s).strip("-")
+    return s
+
+
+STATES = [
+    {
+        "name": "Missouri", "abbr": "MO", "slug": "missouri", "capital": "Jefferson City",
+        "region": "the Midwest",
+        "comp": "the Missouri Division of Workers' Compensation",
+        "courts": "Missouri circuit courts",
+        "home": True,
+        "cities": [
+            "Kansas City", "St. Louis", "Springfield", "Columbia", "Independence", "Lee's Summit",
+            "O'Fallon", "St. Joseph", "St. Charles", "St. Peters", "Blue Springs", "Florissant",
+            "Joplin", "Chesterfield", "Jefferson City", "Cape Girardeau", "Wildwood", "University City",
+            "Ballwin", "Raytown", "Liberty", "Wentzville", "Kirkwood", "Maryland Heights", "Hazelwood",
+            "Gladstone", "Grandview", "Belton", "Webster Groves", "Sedalia", "Ferguson", "Arnold",
+            "Rolla", "Ozark", "Raymore", "Nixa", "Warrensburg", "Kirksville", "Hannibal", "Poplar Bluff",
+            "Sikeston", "Farmington", "Washington", "Clayton", "Republic", "Lebanon", "Carthage",
+            "Branson", "Fulton", "Moberly", "West Plains", "Marshall", "Bolivar", "Festus", "Kennett",
+        ],
+    },
+    {
+        "name": "Illinois", "abbr": "IL", "slug": "illinois", "capital": "Springfield",
+        "region": "the Midwest",
+        "comp": "the Illinois Workers' Compensation Commission",
+        "courts": "Illinois circuit courts",
+        "cities": [
+            "Chicago", "Aurora", "Naperville", "Joliet", "Rockford", "Springfield", "Elgin", "Peoria",
+            "Champaign", "Waukegan", "Cicero", "Bloomington", "Arlington Heights", "Evanston", "Decatur",
+            "Schaumburg", "Bolingbrook", "Palatine", "Skokie", "Des Plaines", "Orland Park", "Tinley Park",
+            "Oak Lawn", "Berwyn", "Mount Prospect", "Normal", "Wheaton", "Hoffman Estates", "Oak Park",
+            "Downers Grove", "Elmhurst", "Glenview", "DeKalb", "Lombard", "Belleville", "Moline",
+            "Buffalo Grove", "Bartlett", "Urbana", "Crystal Lake", "Quincy", "Streamwood", "Carol Stream",
+            "Romeoville", "Rock Island", "Carpentersville", "Wheeling", "Park Ridge", "Addison",
+            "Calumet City", "Northbrook", "Elk Grove Village", "Danville", "Galesburg", "Pekin",
+            "Granite City", "Highland Park", "O'Fallon", "Kankakee", "Alton", "Edwardsville", "Carbondale",
+        ],
+    },
+    {
+        "name": "Michigan", "abbr": "MI", "slug": "michigan", "capital": "Lansing",
+        "region": "the Great Lakes region",
+        "comp": "the Michigan Workers' Disability Compensation Agency",
+        "courts": "Michigan circuit courts",
+        "cities": [
+            "Detroit", "Grand Rapids", "Warren", "Sterling Heights", "Ann Arbor", "Lansing", "Dearborn",
+            "Livonia", "Troy", "Westland", "Farmington Hills", "Kalamazoo", "Wyoming", "Southfield",
+            "Rochester Hills", "Taylor", "Pontiac", "St. Clair Shores", "Royal Oak", "Novi",
+            "Dearborn Heights", "Battle Creek", "Saginaw", "Kentwood", "East Lansing", "Roseville",
+            "Portage", "Midland", "Lincoln Park", "Muskegon", "Bay City", "Jackson", "Holland",
+            "Eastpointe", "Port Huron", "Madison Heights", "Burton", "Southgate", "Marquette",
+            "Traverse City", "Flint", "Wyandotte", "Mount Pleasant", "Garden City", "Inkster",
+            "Allen Park", "Ferndale", "Walker", "Romulus", "Auburn Hills", "Birmingham", "Adrian",
+        ],
+    },
+    {
+        "name": "Kansas", "abbr": "KS", "slug": "kansas", "capital": "Topeka",
+        "region": "the Midwest",
+        "comp": "the Kansas Division of Workers Compensation",
+        "courts": "Kansas district courts",
+        "cities": [
+            "Wichita", "Overland Park", "Kansas City", "Olathe", "Topeka", "Lawrence", "Shawnee",
+            "Lenexa", "Manhattan", "Salina", "Hutchinson", "Leavenworth", "Leawood", "Dodge City",
+            "Garden City", "Junction City", "Emporia", "Derby", "Prairie Village", "Hays", "Liberal",
+            "Gardner", "Pittsburg", "Newton", "Great Bend", "McPherson", "El Dorado", "Ottawa",
+            "Winfield", "Arkansas City", "Andover", "Merriam", "Haysville", "Atchison", "Parsons",
+            "Coffeyville", "Independence", "Mission", "Chanute",
+        ],
+    },
+    {
+        "name": "Colorado", "abbr": "CO", "slug": "colorado", "capital": "Denver",
+        "region": "the Rocky Mountain region",
+        "comp": "the Colorado Division of Workers' Compensation",
+        "courts": "Colorado district courts",
+        "cities": [
+            "Denver", "Colorado Springs", "Aurora", "Fort Collins", "Lakewood", "Thornton", "Arvada",
+            "Westminster", "Pueblo", "Centennial", "Boulder", "Greeley", "Longmont", "Loveland",
+            "Grand Junction", "Broomfield", "Castle Rock", "Commerce City", "Parker", "Littleton",
+            "Northglenn", "Brighton", "Englewood", "Wheat Ridge", "Fountain", "Lafayette", "Windsor",
+            "Erie", "Golden", "Louisville", "Montrose", "Durango", "Canon City", "Greenwood Village",
+            "Sterling", "Federal Heights", "Firestone", "Frederick", "Steamboat Springs", "Glenwood Springs",
+            "Fort Morgan", "Delta", "Cortez",
+        ],
+    },
+    {
+        "name": "Nebraska", "abbr": "NE", "slug": "nebraska", "capital": "Lincoln",
+        "region": "the Great Plains",
+        "comp": "the Nebraska Workers' Compensation Court",
+        "courts": "Nebraska district courts",
+        "cities": [
+            "Omaha", "Lincoln", "Bellevue", "Grand Island", "Kearney", "Fremont", "Hastings", "Norfolk",
+            "Columbus", "North Platte", "Papillion", "La Vista", "Scottsbluff", "South Sioux City",
+            "Beatrice", "Lexington", "Gering", "Alliance", "Blair", "York", "McCook", "Nebraska City",
+            "Seward", "Crete", "Sidney", "Plattsmouth", "Schuyler", "Ralston", "Wayne", "Holdrege",
+            "Chadron", "Gretna", "Ogallala", "Aurora", "Cozad",
+        ],
+    },
+    {
+        "name": "Idaho", "abbr": "ID", "slug": "idaho", "capital": "Boise",
+        "region": "the Mountain West",
+        "comp": "the Idaho Industrial Commission",
+        "courts": "Idaho district courts",
+        "cities": [
+            "Boise", "Meridian", "Nampa", "Idaho Falls", "Caldwell", "Pocatello", "Coeur d'Alene",
+            "Twin Falls", "Post Falls", "Lewiston", "Rexburg", "Moscow", "Eagle", "Kuna", "Ammon",
+            "Chubbuck", "Hayden", "Mountain Home", "Blackfoot", "Garden City", "Jerome", "Burley",
+            "Star", "Hailey", "Sandpoint", "Rupert", "Payette", "Emmett", "Middleton", "Rathdrum",
+            "Preston", "Weiser", "Salmon",
+        ],
+    },
+]
+
+# Deduplicate city slugs within a state and attach slug + path to each.
+for _st in STATES:
+    seen = set()
+    cities = []
+    for c in _st["cities"]:
+        sl = slugify(c)
+        if sl in seen:
+            continue
+        seen.add(sl)
+        cities.append({"name": c, "slug": sl,
+                       "path": f"/locations/{_st['slug']}/{sl}/"})
+    _st["cities"] = cities
+    _st["path"] = f"/locations/{_st['slug']}/"
+
+
+def pick(options, seed):
+    return options[seed % len(options)]
+
+
+def nearby(state, idx, n=6):
+    """Return n other cities in the state, windowed around idx for variety."""
+    cities = state["cities"]
+    out = []
+    step = 1
+    while len(out) < min(n, len(cities) - 1):
+        for d in (idx + step, idx - step):
+            j = d % len(cities)
+            if j != idx and cities[j] not in out:
+                out.append(cities[j])
+                if len(out) >= n:
+                    break
+        step += 1
+        if step > len(cities):
+            break
+    return out
+
+
+def locations_hub_body():
+    cards = ""
+    for st in STATES:
+        cards += f"""
+      <a class="card" href="{st['path']}">
+        <span class="card-ico">{icon('globe')}</span>
+        <h3>{st['name']}</h3>
+        <p>Vocational expert &amp; life care planning services across {len(st['cities'])}+ cities and
+           towns in {st['name']}, including {st['cities'][0]['name']}, {st['cities'][1]['name']},
+           and {st['cities'][2]['name']}.</p>
+        <span class="card-link">View {st['name']} &rarr;</span>
+      </a>"""
+    total = sum(len(s["cities"]) for s in STATES)
+    body = f"""
+{page_hero("Service Areas", "Vocational expert &amp; life care planning services near you",
+           f"Purinton Analytics serves attorneys and insurers in {len(STATES)} states and more than "
+           f"{total} cities and towns — with objective, defensible vocational and life care planning "
+           "opinions for cases wherever they are venued.")}
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow">Where we work</p>
+      <h2 class="section-title">Select your state</h2>
+      <p class="section-intro">Remote evaluation, deposition, and trial testimony are available
+        throughout our service area, with in-person availability by arrangement.</p>
+    </div>
+    <div class="card-grid">{cards}
+    </div>
+  </div>
+</section>
+{cta_band()}
+"""
+    schema = (
+        '{"@context":"https://schema.org","@type":"ItemList","name":"Service Areas",'
+        '"itemListElement":[%s]}'
+        % ",".join(
+            '{"@type":"ListItem","position":%d,"name":"%s","url":"%s"}'
+            % (i, s["name"], SITE["domain"] + s["path"])
+            for i, s in enumerate(STATES, 1)
+        )
+    )
+    return body, [org_schema(), schema]
+
+
+def state_body(st):
+    city_links = "".join(
+        f'<li><a href="{c["path"]}">{c["name"]}, {st["abbr"]}</a></li>' for c in st["cities"]
+    )
+    home_note = ""
+    if st.get("home"):
+        home_note = (f" The firm is based in {SITE['city']}, {st['name']}, and works with counsel "
+                     f"throughout the state.")
+
+    faq_html, faq_schema = faq_block(
+        f"Vocational expert &amp; life care planning FAQs — {st['name']}",
+        [
+            (f"Do you provide vocational expert services throughout {st['name']}?",
+             f"<p>Yes. Purinton Analytics provides vocational expert evaluations, earning capacity and "
+             f"wage loss analysis, and life care planning for cases throughout {st['name']} — from "
+             f"{st['cities'][0]['name']} and {st['cities'][1]['name']} to smaller communities across "
+             f"the state — for both plaintiff and defense counsel.</p>"),
+            (f"Are your opinions admissible in {st['courts']}?",
+             f"<p>Our opinions are built on accepted vocational and life care planning methodology and "
+             f"documented data so they withstand scrutiny in {st['courts']} and before {st['comp']}, "
+             f"including <em>Daubert</em> and <em>Frye</em> challenges.</p>"),
+            (f"Do you handle {st['name']} workers' compensation matters?",
+             f"<p>Yes. We provide employability evaluations, transferable skills analysis, and labor "
+             f"market research for matters before {st['comp']}, in addition to personal injury, "
+             f"employment, and family law cases.</p>"),
+        ],
+    )
+
+    body = f"""
+{page_hero(st['name'] + " Service Area",
+           f"{st['name']} vocational expert &amp; life care planner",
+           f"Objective, defensible vocational and life care planning opinions for personal injury, "
+           f"workers' compensation, employment, and family law matters across {st['name']}.")}
+
+<section class="section">
+  <div class="container split">
+    <div class="split-main">
+      <h2>Serving attorneys across {st['name']}</h2>
+      <p>Purinton Analytics provides {st['name']} trial attorneys and insurers with vocational expert
+        evaluations and life care plans that translate injury, disability, and loss into clear,
+        defensible opinions.{home_note} We are retained by both plaintiff and defense counsel and
+        provide testimony in {st['courts']} and before {st['comp']}.</p>
+      <p>Every earning capacity and employability opinion is grounded in {st['name']}'s labor market —
+        local wages, job availability, and occupational requirements — so conclusions reflect the
+        economy your case will be tried in, not national averages.</p>
+
+      <h2>Services available in {st['name']}</h2>
+      {card_grid(SERVICES, SERVICE_ICONS)}
+
+      <h2>Cities &amp; towns we serve in {st['name']}</h2>
+      <p>Select a community below, or <a href="/contact/">contact us</a> about any location in
+        {st['name']}. Remote evaluation and testimony are available statewide.</p>
+      <ul class="city-list">{city_links}</ul>
+    </div>
+    <aside class="split-aside">
+      <div class="aside-card">
+        <h3>{st['name']} at a glance</h3>
+        <dl class="aside-dl">
+          <dt>State</dt><dd>{st['name']} ({st['abbr']})</dd>
+          <dt>Capital</dt><dd>{st['capital']}</dd>
+          <dt>Region</dt><dd>{st['region'].replace('the ', '').title()}</dd>
+          <dt>Comp authority</dt><dd>{st['comp']}</dd>
+          <dt>Communities served</dt><dd>{len(st['cities'])}+</dd>
+        </dl>
+        <a href="/contact/" class="btn btn-block">Request a Consultation</a>
+        <a href="tel:{SITE['phone_e164']}" class="card-link">{SITE['phone_display']} &rarr;</a>
+      </div>
+    </aside>
+  </div>
+</section>
+
+{faq_html}
+{cta_band(heading=f"Need a vocational or life care expert in {st['name']}?",
+          sub=f"Tell us about your {st['name']} matter and we'll outline how an objective vocational "
+              "or life care planning opinion can support it.")}
+"""
+    state_schema = (
+        '{"@context":"https://schema.org","@type":"Service",'
+        '"name":"Vocational Expert & Life Care Planning Services in %s",'
+        '"serviceType":"Vocational Expert & Life Care Planning",'
+        '"url":"%s","provider":{"@id":"%s/#organization"},'
+        '"areaServed":{"@type":"State","name":"%s"},'
+        '"description":"Vocational expert evaluations, earning capacity and wage loss analysis, and life '
+        'care planning for personal injury, workers compensation, employment, and family law matters '
+        'throughout %s."}'
+        % (st["name"], SITE["domain"] + st["path"], SITE["domain"], st["name"], st["name"])
+    )
+    return body, [org_schema(), state_schema, faq_schema]
+
+
+# Content variants for city pages (differentiated, localized).
+CITY_INTRO = [
+    "Purinton Analytics provides {city}, {abbr} attorneys and insurers with objective vocational expert "
+    "evaluations and life care planning opinions. From employability and earning capacity to the "
+    "lifetime cost of care, we deliver litigation-ready analysis for cases venued in and around {city}.",
+    "When a {city}, {state} case turns on what an injured person can earn — or what their future "
+    "care will cost — Purinton Analytics delivers defensible vocational and life care planning "
+    "opinions that hold up in {courts}.",
+    "Serving {city} and the surrounding {state} legal community, Purinton Analytics offers forensic "
+    "vocational evaluations, earning capacity and wage loss analysis, and comprehensive life care plans "
+    "for plaintiff and defense counsel alike.",
+    "For {city}, {state} litigation, Purinton Analytics provides the vocational and life care planning "
+    "foundation that turns injury and disability into clear, defensible economic opinions.",
+]
+
+CITY_LOCAL = [
+    "Every opinion is grounded in the realities of the {city}-area labor market. We research local "
+    "wages, job availability, and occupational requirements so an earning capacity opinion reflects the "
+    "economy your case will actually be tried in.",
+    "A credible vocational opinion depends on local data. We analyze the {city} and broader {state} "
+    "labor market — current wages, transferable skills, and realistic job availability — to "
+    "support employability and earning capacity findings.",
+    "Because earning capacity is tied to a specific market, we research the {city} regional economy and "
+    "{state} occupational data so our conclusions reflect genuine local opportunities rather than "
+    "national averages.",
+    "We tie each {city} earning capacity opinion to local conditions — the wages employers in the "
+    "area actually pay and the jobs that are realistically available to the claimant.",
+]
+
+CITY_TRUST = [
+    "Retained on both sides of the aisle, we provide the same objective methodology whether you "
+    "represent the plaintiff or the defense — because a {city} opinion is only as valuable as it is "
+    "defensible.",
+    "From the first records review through deposition and trial testimony, {city} counsel work directly "
+    "with {principal}, {creds} — not a rotating roster of associates.",
+    "Our {city} engagements pair clinical insight with board-level vocational certification, connecting "
+    "medical evidence, functional capacity, and labor-market data into a single, well-supported opinion.",
+    "Whether the matter is catastrophic or non-catastrophic, our {city} opinions are built to withstand "
+    "cross-examination and <em>Daubert</em> or <em>Frye</em> scrutiny.",
+]
+
+
+def city_body(st, city, idx):
+    ctx = dict(city=city["name"], abbr=st["abbr"], state=st["name"], courts=st["courts"],
+               comp=st["comp"], principal=SITE["principal"], creds=SITE["principal_creds"])
+    seed = idx + len(city["name"])
+    intro = pick(CITY_INTRO, seed).format(**ctx)
+    local = pick(CITY_LOCAL, seed + 1).format(**ctx)
+    trust = pick(CITY_TRUST, seed + 2).format(**ctx)
+
+    near = nearby(st, idx)
+    near_html = "".join(f'<a class="pill" href="{c["path"]}">{c["name"]}</a>' for c in near)
+
+    svc_links = "".join(
+        f'<li>{icon("check")}<div><strong><a href="{h}">{n}</a></strong>'
+        f'<p>{d}</p></div></li>' for n, h, d in SERVICES
+    )
+
+    faq_html, faq_schema = faq_block(
+        f"Vocational expert &amp; life care planning in {city['name']}",
+        [
+            (f"Do you provide vocational expert services for {city['name']} cases?",
+             f"<p>Yes. Purinton Analytics provides vocational expert evaluations and testimony for "
+             f"personal injury, workers' compensation, employment, and family law matters in "
+             f"{city['name']} and throughout {st['name']}, for both plaintiff and defense counsel.</p>"),
+            (f"Can you testify in {city['name']}-area courts?",
+             f"<p>Yes. We provide deposition and trial testimony in {st['courts']} and before "
+             f"{st['comp']}, with both in-person and remote options depending on the needs of your "
+             f"{city['name']} case.</p>"),
+            (f"How is earning capacity determined for a {city['name']} claimant?",
+             f"<p>We combine the individual's medical, educational, and vocational profile with research "
+             f"into the {city['name']}-area labor market — local wages, job availability, and "
+             f"transferable skills — to form an objective, defensible earning capacity opinion.</p>"),
+        ],
+    )
+
+    body = f"""
+{page_hero(city['name'] + ", " + st['abbr'],
+           f"Vocational expert &amp; life care planner in {city['name']}, {st['abbr']}",
+           f"Objective, defensible vocational evaluations and life care plans for {city['name']} "
+           f"attorneys and insurers — plaintiff and defense, in {st['name']}.")}
+
+<section class="section">
+  <div class="container split">
+    <div class="split-main">
+      <h2>Vocational &amp; life care planning experts serving {city['name']}</h2>
+      <p>{intro}</p>
+      <p>{local}</p>
+      <p>{trust}</p>
+
+      <h2>How we help {city['name']} attorneys</h2>
+      <ul class="incl-list">{svc_links}</ul>
+
+      <h2>Practice areas in {city['name']}, {st['abbr']}</h2>
+      <p>We support {city['name']} counsel across the cases where lost earning capacity and future
+        care costs drive value:</p>
+      <div class="pill-row" style="justify-content:flex-start">
+        {"".join(f'<a class="pill" href="{h}">{n}</a>' for n, h, _ in PRACTICE_AREAS)}
+      </div>
+    </div>
+    <aside class="split-aside">
+      <div class="aside-card">
+        <h3>{city['name']} engagements</h3>
+        <dl class="aside-dl">
+          <dt>City</dt><dd>{city['name']}, {st['abbr']}</dd>
+          <dt>State</dt><dd>{st['name']}</dd>
+          <dt>Used by</dt><dd>Plaintiff &amp; defense</dd>
+          <dt>Testimony</dt><dd>In-person &amp; remote</dd>
+        </dl>
+        <a href="/contact/" class="btn btn-block">Discuss Your Case</a>
+        <a href="tel:{SITE['phone_e164']}" class="card-link">{SITE['phone_display']} &rarr;</a>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<section class="section section-alt">
+  <div class="container narrow center">
+    <h2 class="section-title">Other {st['name']} communities we serve</h2>
+    <div class="pill-row">{near_html}
+      <a class="pill" href="{st['path']}">All {st['name']} locations &rarr;</a>
+    </div>
+  </div>
+</section>
+
+{faq_html}
+{cta_band(heading=f"Vocational or life care expert for your {city['name']} case",
+          sub=f"Tell us about your {city['name']}, {st['abbr']} matter and receive a candid assessment "
+              "of how a vocational or life care planning opinion can support it.")}
+"""
+    city_schema = (
+        '{"@context":"https://schema.org","@type":"Service",'
+        '"name":"Vocational Expert & Life Care Planning in %s, %s",'
+        '"serviceType":"Vocational Expert & Life Care Planning",'
+        '"url":"%s","provider":{"@id":"%s/#organization"},'
+        '"areaServed":{"@type":"City","name":"%s","containedInPlace":'
+        '{"@type":"State","name":"%s"}},'
+        '"description":"Objective vocational expert evaluations and life care planning for personal '
+        'injury, workers compensation, employment, and family law matters in %s, %s."}'
+        % (city["name"], st["abbr"], SITE["domain"] + city["path"], SITE["domain"],
+           city["name"], st["name"], city["name"], st["name"])
+    )
+    return body, [org_schema(), city_schema, faq_schema]
+
+
+def location_breadcrumb(st=None, city=None):
+    crumbs = [("Home", "/"), ("Locations", "/locations/")]
+    if st:
+        crumbs.append((st["name"], st["path"]))
+    if city:
+        crumbs.append((city["name"], city["path"]))
+    return crumbs
+
+
+# --------------------------------------------------------------------------- #
 #  Page registry & writer
 # --------------------------------------------------------------------------- #
 
@@ -1343,6 +1795,37 @@ def build_pages():
                       description="The page you requested could not be found.",
                       active="", body=b, schema=s, is_file=True))
 
+    # ---- Locations (hub + states + cities) ----
+    b, s = locations_hub_body()
+    pages.append(dict(path="/locations/",
+                      title="Service Areas | Vocational Expert & Life Care Planner | Purinton Analytics",
+                      description="Purinton Analytics serves attorneys in Missouri, Illinois, Michigan, "
+                      "Kansas, Colorado, Nebraska, and Idaho with vocational expert and life care "
+                      "planning services. Find your city.",
+                      active="/locations/", body=b, schema=s,
+                      breadcrumb=location_breadcrumb()))
+
+    for st in STATES:
+        b, s = state_body(st)
+        pages.append(dict(path=st["path"],
+                          title=f"{st['name']} Vocational Expert & Life Care Planner | Purinton Analytics",
+                          description=f"Vocational expert evaluations, earning capacity & wage loss "
+                          f"analysis, and life care planning across {st['name']} — personal injury, "
+                          f"workers' comp, employment & family law. Plaintiff & defense.",
+                          active="/locations/", body=b, schema=s,
+                          breadcrumb=location_breadcrumb(st)))
+
+        for idx, city in enumerate(st["cities"]):
+            b, s = city_body(st, city, idx)
+            pages.append(dict(path=city["path"],
+                              title=f"Vocational Expert & Life Care Planner in {city['name']}, "
+                                    f"{st['abbr']} | Purinton Analytics",
+                              description=f"Objective vocational expert evaluations and life care plans "
+                              f"for {city['name']}, {st['name']} attorneys — personal injury, workers' "
+                              f"comp, employment & family law. Plaintiff & defense; in-person & remote.",
+                              active="/locations/", body=b, schema=s,
+                              breadcrumb=location_breadcrumb(st, city)))
+
     return pages
 
 
@@ -1367,11 +1850,22 @@ def write_page(page):
 def write_meta_files(pages):
     indexable = [p for p in pages if not p.get("is_file") and p["path"] != "/404.html"]
     priorities = {"/": "1.0", "/services/": "0.9", "/practice-areas/": "0.9", "/about/": "0.8",
-                  "/contact/": "0.8"}
+                  "/contact/": "0.8", "/locations/": "0.8"}
+    state_paths = {s["path"] for s in STATES}
+
+    def prio(path):
+        if path in priorities:
+            return priorities[path]
+        if path in state_paths:
+            return "0.7"
+        if path.startswith("/locations/"):  # city pages
+            return "0.6"
+        return "0.7"
+
     urls = ""
     for p in indexable:
-        pr = priorities.get(p["path"], "0.7")
-        cf = "monthly" if p["path"] not in ("/", "/services/", "/practice-areas/") else "weekly"
+        pr = prio(p["path"])
+        cf = "monthly" if p["path"] not in ("/", "/services/", "/practice-areas/", "/locations/") else "weekly"
         urls += (f"  <url>\n    <loc>{SITE['domain']}{p['path']}</loc>\n"
                  f"    <lastmod>{LASTMOD}</lastmod>\n    <changefreq>{cf}</changefreq>\n"
                  f"    <priority>{pr}</priority>\n  </url>\n")
@@ -1422,6 +1916,10 @@ def write_meta_files(pages):
 - [Workers' Compensation]({SITE['domain']}/practice-areas/workers-compensation/)
 - [Employment Litigation]({SITE['domain']}/practice-areas/employment-litigation/)
 - [Family Law]({SITE['domain']}/practice-areas/family-law/)
+
+## Service Areas
+Purinton Analytics serves attorneys and insurers across {len(STATES)} states and {sum(len(s["cities"]) for s in STATES)}+ cities and towns. Remote evaluation, deposition, and trial testimony are available throughout.
+{chr(10).join(f"- [{s['name']}]({SITE['domain']}{s['path']}): vocational expert & life care planning services in {s['cities'][0]['name']}, {s['cities'][1]['name']}, {s['cities'][2]['name']}, and {len(s['cities'])-3}+ more communities." for s in STATES)}
 
 ## About
 - [About Jason C. Purinton]({SITE['domain']}/about/): Credentials — Licensed Professional Counselor (LPC), Certified Rehabilitation Counselor (CRC), Certified Vocational Evaluator (CVE), Fellow of the American Board of Vocational Experts (ABVE/F), Forensic Vocational Expert (FVE), International Psychometric Evaluator Certified (IPEC).
