@@ -42,7 +42,7 @@ SITE = {
     "geo_lng": "-90.3318",
     "founded": "2018",
     "linkedin": "https://www.linkedin.com/in/purintonanalytics/",
-    "theme": "#0f2a4a",
+    "theme": "#012262",
 }
 
 BUILD_YEAR = date.today().year
