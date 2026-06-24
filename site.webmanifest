@@ -1,0 +1,12 @@
+{
+  "name": "Purinton Analytics, LLC",
+  "short_name": "Purinton Analytics",
+  "description": "Vocational expert and life care planning services",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0f2a4a",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}
