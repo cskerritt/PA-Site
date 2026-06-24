@@ -1,0 +1,5 @@
+# Local Claude Code tooling
+.claude/
+
+# OS cruft
+.DS_Store
