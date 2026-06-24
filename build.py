@@ -449,12 +449,12 @@ def card_grid(items, icon_map=None):
 # ---- HOME ----------------------------------------------------------------- #
 
 def home_body():
-    creds = ["LPC", "CRC", "CVE", "ABVE/F", "FVE", "IPEC"]
+    creds = ["LPC", "CRC", "CVE", "ABVE/F", "FVE", "IPEC", "RN"]
     chips = "".join(f'<span class="chip">{c}</span>' for c in creds)
     stats = [
-        ("2019", "Providing expert testimony in U.S. &amp; Canadian courts since"),
-        ("2", "Sides served — retained by plaintiff and defense counsel alike"),
-        ("100%", "Opinions grounded in objective, defensible methodology"),
+        ("3,000+", "Social Security disability hearings testified across the U.S."),
+        ("Since 2018", "Forensic vocational evaluation &amp; testimony"),
+        ("4 offices", "Kansas City &middot; St. Louis &middot; Denver &middot; Chicago"),
     ]
     stat_html = "".join(
         f'<div class="stat"><span class="stat-num">{n}</span><span class="stat-label">{l}</span></div>'
@@ -504,18 +504,19 @@ def home_body():
     </div>
     <aside class="hero-card" aria-label="About the expert">
       <div class="hero-card-top">
-        <span class="hero-avatar" aria-hidden="true">JP</span>
+        <img class="hero-photo" src="/assets/img/brand/Jason-Purinton-2025-BW.webp" alt="Jason C. Purinton" width="655" height="450" loading="eager">
         <div>
           <span class="hero-card-name">{SITE['principal']}</span>
           <span class="hero-card-role">Principal Vocational Expert &amp; Life Care Planner</span>
         </div>
       </div>
-      <p>Licensed counselor and board-certified vocational expert providing expert opinions and
-         testimony in civil litigation since 2019.</p>
+      <p>A licensed counselor and registered nurse who is also a board-certified vocational expert —
+         pairing clinical insight with forensic methodology. Testifying in disability and civil
+         litigation since 2018.</p>
       <ul class="hero-card-list">
         <li>{icon('check')} Fellow, American Board of Vocational Experts</li>
         <li>{icon('check')} Certified Rehabilitation Counselor &amp; Vocational Evaluator</li>
-        <li>{icon('check')} Retained nationwide, plaintiff &amp; defense</li>
+        <li>{icon('check')} 3,000+ disability hearings; retained plaintiff &amp; defense</li>
       </ul>
       <a href="/about/" class="card-link">Meet Jason &rarr;</a>
     </aside>
@@ -570,21 +571,24 @@ def home_body():
 
 def about_body():
     creds = [
-        ("Licensed Professional Counselor", "LPC"),
+        ("Licensed Professional Counselor (Missouri)", "LPC"),
         ("Certified Rehabilitation Counselor", "CRC"),
         ("Certified Vocational Evaluator", "CVE"),
-        ("Fellow, American Board of Vocational Experts", "ABVE/F"),
-        ("Forensic Vocational Expert", "FVE"),
+        ("Fellow &amp; Board Certified, American Board of Vocational Experts", "ABVE/F"),
+        ("Forensic Vocational Expert, Am. Rehabilitation Economics Association", "FVE"),
         ("International Psychometric Evaluator, Certified", "IPEC"),
+        ("National Certified Counselor", "NCC"),
+        ("Registered Nurse (Missouri)", "RN"),
     ]
     cred_html = "".join(
         f'<li><span class="cred-abbr">{ab}</span><span class="cred-full">{full}</span></li>'
         for full, ab in creds
     )
     edu = [
-        ("M.S., Counseling", "Emporia State University"),
-        ("B.S., Nursing", "MidAmerica Nazarene University"),
-        ("B.S., Business", "University of Kansas"),
+        ("M.S., Rehabilitation Counseling", "Emporia State University — 2018&ndash;2019, Phi Kappa Phi"),
+        ("B.S.N., Nursing (Registered Nurse)", "MidAmerica Nazarene University — 2016&ndash;2017"),
+        ("E.M.T.", "Johnson County Community College — 2014"),
+        ("B.S., Business (Communication Studies)", "University of Kansas — 1993&ndash;1997"),
     ]
     edu_html = "".join(f'<li><strong>{d}</strong><span>{s}</span></li>' for d, s in edu)
 
@@ -602,8 +606,8 @@ def about_body():
 
     body = f"""
 {page_hero("About", "Jason C. Purinton, " + SITE['principal_creds'],
-           "A licensed counselor and board-certified vocational expert helping attorneys translate "
-           "injury, disability, and loss into objective, defensible opinions.",
+           "A licensed counselor and registered nurse who is also a board-certified vocational expert "
+           "&mdash; translating injury, disability, and loss into objective, defensible opinions.",
            secondary=("View Credentials", "#credentials"))}
 
 <section class="section">
@@ -615,19 +619,31 @@ def about_body():
         evaluations of employability and earning capacity, comprehensive life care plans, and expert
         testimony in civil litigation.</p>
       <p>The firm was founded in {SITE['founded']} as Vocational Pros, LLC and was rebranded in 2024 as
-        Purinton Analytics to reflect a broader range of analytical services. Since 2019, Jason has
-        provided expert opinions and testimony in cases across the United States and Canada, retained
-        by both plaintiff and defense counsel.</p>
+        Purinton Analytics to reflect a broader range of analytical services. Jason has testified in
+        <strong>more than 3,000 Social Security disability hearings</strong> across the United States and
+        serves as a forensic vocational rehabilitation expert witness for the Social Security
+        Administration&rsquo;s Office of Disability Adjudication and Review. Since 2019 he has also
+        provided opinions and testimony in civil litigation nationwide, retained by both plaintiff and
+        defense counsel.</p>
       <p>His clinical background as a licensed counselor and registered nurse, combined with
         board-level certification in vocational evaluation, allows him to connect medical evidence,
         functional capacity, and real-world labor-market data into opinions that are both clinically
-        grounded and legally defensible.</p>
+        grounded and legally defensible. Evaluations draw on the Dictionary of Occupational Titles,
+        O*NET, the Occupational Requirements Survey, transferable-skills analysis, and current
+        labor-market data.</p>
 
       <h2 id="credentials">Credentials &amp; certifications</h2>
       <ul class="cred-list">{cred_html}</ul>
 
       <h2>Education</h2>
       <ul class="edu-list">{edu_html}</ul>
+
+      <h2>Professional leadership</h2>
+      <ul class="check-list">
+        <li>{icon('check')} Board of Directors, President-Elect (2025) &mdash; American Rehabilitation Economics Association</li>
+        <li>{icon('check')} Board of Directors, Forensic Section Representative (2022&ndash;2024) &mdash; International Association of Rehabilitation Professionals</li>
+        <li>{icon('check')} Fellow (2025) &mdash; American Board of Vocational Experts</li>
+      </ul>
 
       <h2>Professional focus</h2>
       <ul class="check-list">
@@ -640,12 +656,14 @@ def about_body():
       </ul>
     </div>
     <aside class="split-aside">
+      <img class="about-portrait" src="/assets/img/brand/about-Jason-Purinton-Informal-BW.webp" alt="Jason C. Purinton" width="850" height="1000" loading="lazy">
       <div class="aside-card">
         <h3>At a glance</h3>
         <dl class="aside-dl">
           <dt>Principal</dt><dd>{SITE['principal']}</dd>
           <dt>Credentials</dt><dd>{SITE['principal_creds']}</dd>
-          <dt>Testifying since</dt><dd>2019</dd>
+          <dt>SSA hearings</dt><dd>3,000+ testified</dd>
+          <dt>Forensic practice since</dt><dd>2018</dd>
           <dt>Engagements</dt><dd>Plaintiff &amp; defense</dd>
           <dt>Service area</dt><dd>United States &amp; Canada</dd>
           <dt>Based in</dt><dd>Kansas City, Missouri</dd>
