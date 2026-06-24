@@ -26,22 +26,18 @@ SITE = {
     "domain": "https://pa-expert.com",
     "tagline": "Vocational Expert & Life Care Planning Services",
     "principal": "Jason C. Purinton",
-    "principal_creds": "LPC, CRC, CVE, FVE, ABVE/F, IPEC",
+    "principal_creds": "LPC, CRC, CVE, ABVE/F, IPEC",
     "phone_display": "(877) 882-9778",
     "phone_e164": "+18778829778",
-    "mobile_display": "(913) 484-4346",
-    "mobile_e164": "+19134844346",
-    "email": "info@pa-expert.com",
-    "street": "231 S. Bemiston Ave., Ste. 800",
-    "city": "St. Louis",
+    "email": "jason@pa-expert.com",
+    "city": "Kansas City",
     "region": "MO",
     "region_full": "Missouri",
-    "postal": "63105",
     "country": "US",
-    "geo_lat": "38.6446",
-    "geo_lng": "-90.3318",
     "founded": "2018",
-    "linkedin": "https://www.linkedin.com/in/purintonanalytics/",
+    "linkedin": "https://www.linkedin.com/in/pa-expert",
+    "facebook": "https://www.facebook.com/Purinton.Analytics",
+    "x": "https://x.com/PurintonExpert",
     "theme": "#012262",
 }
 
@@ -86,6 +82,28 @@ PRACTICE_AREAS = [
     ("Family Law", "/practice-areas/family-law/",
      "Earning capacity and employability evaluations for support and imputation disputes."),
 ]
+
+# Physical metro offices (cities only — CV lists no street addresses).
+# Set "address" to a real street to enable full LocalBusiness schema on that office.
+OFFICES = [
+    {"slug": "kansas-city", "city": "Kansas City", "region": "MO", "region_full": "Missouri",
+     "skyline": "contact-Kansas-City-Skyline.webp", "address": None, "primary": True,
+     "blurb": "Our home office. Jason Purinton has conducted vocational evaluations and testified across "
+              "Missouri and the greater Kansas City metro since 2018."},
+    {"slug": "st-louis", "city": "St. Louis", "region": "MO", "region_full": "Missouri",
+     "skyline": "contact-St-Louis-Skyline.webp", "address": None,
+     "blurb": "Serving plaintiff and defense counsel in St. Louis City and County and the surrounding "
+              "Eastern Missouri and Metro East courts."},
+    {"slug": "denver", "city": "Denver", "region": "CO", "region_full": "Colorado",
+     "skyline": "contact-Denver-Skyline.webp", "address": None,
+     "blurb": "Vocational expert and life care planning support for Front Range litigation across the "
+              "Denver metro and Colorado."},
+    {"slug": "chicago", "city": "Chicago", "region": "IL", "region_full": "Illinois",
+     "skyline": "contact-Chicago-Skyline.webp", "address": None,
+     "blurb": "Serving Cook County and Chicagoland counsel with employability, earning-capacity, and "
+              "life care planning evaluations."},
+]
+OFFICE_CITIES = " · ".join(o["city"] for o in OFFICES)
 
 # --------------------------------------------------------------------------- #
 #  HTML helpers
@@ -133,9 +151,7 @@ def head(page):
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
 <meta name="author" content="{SITE['principal']}, {SITE['principal_creds']}">
 <meta name="geo.region" content="US-MO">
-<meta name="geo.placename" content="St. Louis, Missouri">
-<meta name="geo.position" content="{SITE['geo_lat']};{SITE['geo_lng']}">
-<meta name="ICBM" content="{SITE['geo_lat']}, {SITE['geo_lng']}">
+<meta name="geo.placename" content="Kansas City, Missouri">
 
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="{esc(SITE['name'])}">
@@ -224,9 +240,8 @@ def footer():
       <h3>Contact</h3>
       <ul class="footer-contact">
         <li><a href="tel:{SITE['phone_e164']}">{SITE['phone_display']}</a> <span>(office)</span></li>
-        <li><a href="tel:{SITE['mobile_e164']}">{SITE['mobile_display']}</a> <span>(mobile)</span></li>
         <li><a href="mailto:{SITE['email']}">{SITE['email']}</a></li>
-        <li class="footer-addr">{SITE['street']}<br>{SITE['city']}, {SITE['region']} {SITE['postal']}</li>
+        <li class="footer-addr">Offices in {OFFICE_CITIES}</li>
       </ul>
     </div>
   </div>
@@ -320,32 +335,41 @@ def org_schema():
         '{"@context":"https://schema.org","@type":["ProfessionalService","LegalService"],'
         '"@id":"%s/#organization","name":"%s","alternateName":"Purinton Analytics",'
         '"url":"%s/","telephone":"%s","email":"%s","priceRange":"$$$",'
-        '"image":"%s/assets/img/og-default.svg","logo":"%s/favicon.svg",'
+        '"image":"%s/assets/img/og-default.png","logo":"%s/favicon.svg",'
         '"description":"Vocational expert and life care planning services providing objective, '
         'defensible evaluations of employability, earning capacity, wage loss, and future cost of '
         'care for plaintiff and defense attorneys nationwide.",'
         '"founder":{"@type":"Person","name":"%s","honorificSuffix":"%s"},'
-        '"address":{"@type":"PostalAddress","streetAddress":"%s","addressLocality":"%s",'
-        '"addressRegion":"%s","postalCode":"%s","addressCountry":"US"},'
-        '"geo":{"@type":"GeoCoordinates","latitude":"%s","longitude":"%s"},'
-        '"areaServed":[{"@type":"Country","name":"United States"},{"@type":"Country","name":"Canada"}],'
-        '"sameAs":["%s"],'
+        '"address":{"@type":"PostalAddress","addressLocality":"%s",'
+        '"addressRegion":"%s","addressCountry":"US"},'
+        '"areaServed":[{"@type":"Country","name":"United States"},{"@type":"Country","name":"Canada"},'
+        '%s],'
+        '"sameAs":[%s],'
         '"knowsAbout":["Vocational Evaluation","Earning Capacity Analysis","Wage Loss Analysis",'
         '"Life Care Planning","Vocational Rehabilitation","Forensic Vocational Assessment",'
         '"Transferable Skills Analysis","Labor Market Survey","Economic Damages"]}'
     ) % (
         SITE["domain"], SITE["name"], SITE["domain"], SITE["phone_e164"], SITE["email"],
         SITE["domain"], SITE["domain"], SITE["principal"], SITE["principal_creds"],
-        SITE["street"], SITE["city"], SITE["region"], SITE["postal"],
-        SITE["geo_lat"], SITE["geo_lng"], SITE["linkedin"],
+        SITE["city"], SITE["region"],
+        ",".join('{"@type":"City","name":"%s, %s"}' % (o["city"], o["region"]) for o in OFFICES),
+        ",".join('"%s"' % u for u in (SITE["linkedin"], SITE["facebook"], SITE["x"])),
     )
 
 
 def person_schema():
     return (
         '{"@context":"https://schema.org","@type":"Person","@id":"%s/about/#person",'
-        '"name":"%s","honorificSuffix":"%s","jobTitle":"Vocational Expert & Life Care Planner",'
-        '"worksFor":{"@id":"%s/#organization"},"url":"%s/about/","sameAs":["%s"],'
+        '"name":"%s","honorificSuffix":"%s","jobTitle":"Forensic Vocational Expert & Life Care Planner",'
+        '"worksFor":{"@id":"%s/#organization"},"url":"%s/about/","sameAs":[%s],'
+        '"alumniOf":['
+        '{"@type":"CollegeOrUniversity","name":"Emporia State University"},'
+        '{"@type":"CollegeOrUniversity","name":"MidAmerica Nazarene University"},'
+        '{"@type":"CollegeOrUniversity","name":"University of Kansas"}],'
+        '"memberOf":['
+        '{"@type":"Organization","name":"American Board of Vocational Experts"},'
+        '{"@type":"Organization","name":"American Rehabilitation Economics Association"},'
+        '{"@type":"Organization","name":"International Association of Rehabilitation Professionals"}],'
         '"knowsAbout":["Vocational Evaluation","Earning Capacity","Life Care Planning",'
         '"Vocational Rehabilitation","Forensic Economics"],'
         '"hasCredential":['
@@ -354,10 +378,11 @@ def person_schema():
         '{"@type":"EducationalOccupationalCredential","credentialCategory":"Certified Vocational Evaluator (CVE)"},'
         '{"@type":"EducationalOccupationalCredential","credentialCategory":"Fellow, American Board of Vocational Experts (ABVE/F)"},'
         '{"@type":"EducationalOccupationalCredential","credentialCategory":"Forensic Vocational Expert (FVE)"},'
-        '{"@type":"EducationalOccupationalCredential","credentialCategory":"International Psychometric Evaluator, Certified (IPEC)"}'
+        '{"@type":"EducationalOccupationalCredential","credentialCategory":"International Psychometric Evaluator, Certified (IPEC)"},'
+        '{"@type":"EducationalOccupationalCredential","credentialCategory":"Registered Nurse (RN)"}'
         ']}'
     ) % (SITE["domain"], SITE["principal"], SITE["principal_creds"], SITE["domain"],
-         SITE["domain"], SITE["linkedin"])
+         SITE["domain"], ",".join('"%s"' % u for u in (SITE["linkedin"], SITE["facebook"], SITE["x"])))
 
 
 def service_schema(name, desc, path):
@@ -456,7 +481,7 @@ def home_body():
             ("Do you work for plaintiffs or defendants?",
              "<p>Both. Purinton Analytics is retained by both plaintiff and defense counsel. Our methodology and conclusions are the same regardless of who retains us — the goal is an objective, defensible opinion, not an advocacy position.</p>"),
             ("What geographic areas do you serve?",
-             "<p>We provide vocational expert and life care planning services for cases throughout the United States and Canada. Remote evaluation and testimony are available, and the firm is based in St. Louis, Missouri.</p>"),
+             "<p>We provide vocational expert and life care planning services for cases throughout the United States and Canada. Remote evaluation and testimony are available, and the firm is based in Kansas City, Missouri, with offices in St. Louis, Denver, and Chicago.</p>"),
             ("How do I retain Purinton Analytics for a case?",
              f"<p>Call {SITE['phone_display']} or send your case details through our <a href='/contact/'>contact form</a>. We will discuss the issues, confirm there is no conflict, and outline the scope, timeline, and fee structure before any work begins.</p>"),
         ],
@@ -623,7 +648,8 @@ def about_body():
           <dt>Testifying since</dt><dd>2019</dd>
           <dt>Engagements</dt><dd>Plaintiff &amp; defense</dd>
           <dt>Service area</dt><dd>United States &amp; Canada</dd>
-          <dt>Based in</dt><dd>St. Louis, Missouri</dd>
+          <dt>Based in</dt><dd>Kansas City, Missouri</dd>
+          <dt>Offices</dt><dd>{OFFICE_CITIES}</dd>
         </dl>
         <a href="/contact/" class="btn btn-block">Request a Consultation</a>
         <a href="{SITE['linkedin']}" class="card-link" rel="noopener" target="_blank">Connect on LinkedIn &rarr;</a>
@@ -1197,10 +1223,9 @@ def contact_body():
       <div class="aside-card">
         <h3>Direct contact</h3>
         <ul class="contact-list">
-          <li><span>Office</span><a href="tel:{SITE['phone_e164']}">{SITE['phone_display']}</a></li>
-          <li><span>Mobile</span><a href="tel:{SITE['mobile_e164']}">{SITE['mobile_display']}</a></li>
+          <li><span>Phone</span><a href="tel:{SITE['phone_e164']}">{SITE['phone_display']}</a></li>
           <li><span>Email</span><a href="mailto:{SITE['email']}">{SITE['email']}</a></li>
-          <li><span>Office</span>{SITE['street']}<br>{SITE['city']}, {SITE['region']} {SITE['postal']}</li>
+          <li><span>Offices</span>{OFFICE_CITIES}</li>
           <li><span>Service area</span>United States &amp; Canada</li>
         </ul>
         <a href="{SITE['linkedin']}" class="card-link" rel="noopener" target="_blank">Connect on LinkedIn &rarr;</a>
@@ -1899,9 +1924,8 @@ def write_meta_files(pages):
 
 ## Contact
 - Phone (office): {SITE['phone_display']}
-- Phone (mobile): {SITE['mobile_display']}
 - Email: {SITE['email']}
-- Address: {SITE['street']}, {SITE['city']}, {SITE['region']} {SITE['postal']}
+- Offices: {OFFICE_CITIES} (meetings by appointment; remote evaluation, deposition, and trial testimony nationwide)
 - Website: {SITE['domain']}
 
 ## Services
