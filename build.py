@@ -101,7 +101,7 @@ def head(page):
     title = page["title"]
     desc = page["description"]
     canonical = url
-    og_img = SITE["domain"] + "/assets/img/og-default.svg"
+    og_img = SITE["domain"] + "/assets/img/og-default.png"
 
     json_ld = "\n".join(
         '<script type="application/ld+json">%s</script>' % j for j in page.get("schema", [])
@@ -143,6 +143,9 @@ def head(page):
 <meta property="og:description" content="{esc(desc)}">
 <meta property="og:url" content="{url}">
 <meta property="og:image" content="{og_img}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/png">
 <meta property="og:locale" content="en_US">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{esc(title)}">
@@ -150,7 +153,8 @@ def head(page):
 <meta name="twitter:image" content="{og_img}">
 
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="/favicon.svg">
+<link rel="icon" href="/assets/img/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="{SITE['theme']}">
 
@@ -1928,7 +1932,9 @@ Purinton Analytics serves attorneys and insurers across {len(STATES)} states and
         '  "start_url": "/",\n  "display": "standalone",\n'
         f'  "background_color": "#ffffff",\n  "theme_color": "{SITE["theme"]}",\n'
         '  "icons": [\n'
-        '    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }\n'
+        '    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },\n'
+        '    { "src": "/assets/img/favicon-32.png", "sizes": "32x32", "type": "image/png" },\n'
+        '    { "src": "/assets/img/apple-touch-icon.png", "sizes": "180x180", "type": "image/png", "purpose": "maskable any" }\n'
         '  ]\n}\n'
     )
     open(os.path.join(ROOT, "site.webmanifest"), "w").write(manifest)
