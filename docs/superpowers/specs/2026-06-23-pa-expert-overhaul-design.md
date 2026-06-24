@@ -85,23 +85,34 @@ e.g. "Memberships & Listings").
 
 ## 4. Content & Accuracy Corrections (Workstream 1)
 
-Authoritative sources: live `pa-expert.com` (home + about), public expert listings
-(JurisPro, SEAK, Law.com, LinkedIn, IARP), and his **18-page CV PDF** (saved at
-`~/.claude/projects/-Users-chrisskerritt/.../webfetch-*.pdf`). **A deep CV pass
-during implementation is required** to confirm exact dates/addresses and avoid
-overstatement.
+Authoritative source: his **18-page CV** (read in full during planning). Where the
+live website and the CV conflict, the **CV is the conservative baseline** and the
+conflict is flagged in §4.1 for the user to confirm (the CV may predate live-site
+updates). Forensic context: every published credential is litigation-exposed, so
+**no claim ships that the CV doesn't support unless the user confirms it.**
 
-Corrections to bake into `build.py`:
+CV-verified facts to bake into `build.py`:
 
-1. **Credentials:** `LPC, CRC, CVE, CLCP, FVE, ABVE/F, IPEC` (add **CLCP** — Certified Life Care Planner).
-2. **Firm history:** founded **2018** as *Vocational Pros, LLC*; rebranded **Purinton Analytics in 2024**; civil-litigation testimony since **2019**.
-3. **Experience:** **3,000+** disability-related vocational evaluations prior to forensic focus.
-4. **Positioning:** the only vocational expert also **licensed/trained as a mental-health counselor**; opinions grounded in objective methodology, psychometric testing, labor-market analysis, current vocational-rehabilitation principles.
-5. **Leadership:** **President, American Rehabilitation Economics Association (AREA)**; **Board of Directors, American Board of Vocational Experts (ABVE)**.
-6. **Education:** MS Counseling — Emporia State University; BSN — MidAmerica Nazarene University; BS Business — University of Kansas. *(Confirm against CV.)*
-7. **Reach:** four offices — **Kansas City, St. Louis, Denver, Chicago**; nationwide; international (Canada: Toronto, Montreal, Vancouver, Calgary, Ottawa, Edmonton).
-8. **Practice areas (4 → ~13):** Personal Injury, Workers' Compensation, Employment Litigation, Family Law, **Medical Malpractice, Motor Vehicle/Trucking, Premises Liability, Product Liability, Labor Law, Long-Term Disability, Social Security Disability, Wrongful Death, Veteran's Disability**.
-9. **Contact facts:** confirm phone(s) — office `(877) 882-9778`, mobile `(913) 484-4346` — and real email (see §7 open inputs).
+1. **Credential string (CV header):** `LPC, CRC, CVE, ABVE/F, IPEC`. Full certifications: Licensed Professional Counselor (MO), National Certified Counselor (NBCC), Certified Rehabilitation Counselor (CRCC), Certified Vocational Evaluator (CRCC), ABVE Fellow & Board Certified (2025), International Psychometric Evaluator–Certified / IPEC (2025), Forensic Vocational Expert (AREA, F0033), Certified Rehabilitation Provider (MO), Qualified Rehabilitation Professional (KS), Qualified Vocational Rehabilitation Counselor/Job Placement Specialist (NE), Certified Trauma Professional, Certified Critical Incident Stress Debriefer, Registered Nurse (MO). **CLCP is NOT on the CV — do not publish it unless confirmed (§4.1).**
+2. **Firm history:** Vocational Consultant at **Purinton Analytics, LLC (formerly Vocational Pros, LLC)** since **2018**; based Kansas City, MO; rebranded to Purinton Analytics **2024**.
+3. **Experience headline:** *"Testified in over 3,000 Social Security disability hearings across the United States."* Use this exact framing (SSA hearings, not generic "evaluations"). Forensic VR expert witness for SSA Office of Disability Adjudication & Review; uses DOT, O*NET, Occupational Requirements Survey.
+4. **Positioning:** uniquely also trained/licensed as a mental-health counselor + RN (clinical depth); opinions grounded in objective methodology, psychometric testing, labor-market analysis, and current vocational-rehabilitation principles. (The mental-health-counselor framing is from the live site; the LPC/RN basis is CV-verified.)
+5. **Leadership (CV-exact):** American Rehabilitation Economics Association — **Board of Directors, President-Elect (2025)**. IARP — Board of Directors, Forensic Section Representative (2022–2024). Medical Missions Foundation — President of the Board (2020–2021). **ABVE: Fellow (2025), member — NOT a board role per the CV.**
+6. **Education (CV-exact):** **MS, Rehabilitation Counseling** (emphasis Vocational Rehabilitation), Emporia State University, 2018–2019, Phi Kappa Phi; **BSN, Registered Nurse**, MidAmerica Nazarene University, 2016–2017; **EMT**, Johnson County Community College, 2014; **BS, Business** (emphasis Communication Studies), University of Kansas, 1993–1997.
+7. **Licensure reach:** state voc-rehab/workers'-comp qualifications in **Missouri, Kansas, and Nebraska**; testimony nationwide.
+8. **Offices (CV):** **Denver, Kansas City, St. Louis, Chicago** — listed as **cities only; the CV gives no street addresses.**
+9. **Contact (CV):** phone **877-882-9778**; email **jason@pa-expert.com**; LinkedIn **linkedin.com/in/pa-expert**; Facebook **facebook.com/Purinton.Analytics**; X **@PurintonExpert**. (Generated site's `info@` email, `/in/purintonanalytics` LinkedIn, and `(913) 484-4346` mobile are NOT on the CV — correct/confirm.)
+10. **Practice areas (4 → ~13):** Personal Injury, Workers' Compensation, Employment Litigation, Family Law, Medical Malpractice, Motor Vehicle/Trucking, Premises Liability, Product Liability, Labor Law (incl. FELA/railroad — CV-supported), Long-Term Disability, Social Security Disability (CV-supported), Wrongful Death, Veteran's Disability. *(PI, workers' comp, family law, SSDI, FELA/railroad, long-haul trucking are CV-evidenced; the rest derive from the live site's own marketing — acceptable for service pages, grounded in his actual methodology.)*
+
+### 4.1 Discrepancies to confirm with the user (live site vs. CV)
+The site ships the **CV-conservative** version of each until confirmed:
+| Claim | Live site says | CV says | Ship until confirmed |
+|---|---|---|---|
+| CLCP credential | Lists **CLCP** | Not present | **Omit CLCP** |
+| AREA role | "President" | "President-Elect (2025)" | "Board of Directors / President-Elect, AREA" |
+| ABVE board | "Board of Directors" | Fellow only | "Fellow, ABVE" |
+| Mobile phone | `(913) 484-4346` on draft | Not on CV | Office line only |
+| St. Louis street address | `231 S. Bemiston Ave, Ste 800` | Cities only | No street address / "by appointment" |
 
 **Accuracy guardrail:** Do **not** emit fabricated `PostalAddress`/`GeoCoordinates`
 for any office without a confirmed street address. Offices without a verified
@@ -161,15 +172,17 @@ needed (Locations vs. Offices distinction must be clear).
 
 Build everything else now; these user-supplied values are collected before/at deploy:
 
-1. **Contact email** — confirm `info@pa-expert.com` or provide the real address.
-2. **Web3Forms access key** — chosen handler; I wire the form, user pastes the key.
-3. **Office addresses** — for each of KC / St. Louis / Denver / Chicago: real
+1. **Web3Forms access key** — chosen handler; I wire the form, user pastes the key.
+2. **Office addresses** — for each of KC / St. Louis / Denver / Chicago: real
    street address (→ full `LocalBusiness` schema) **or** "by appointment"
-   (→ no fabricated address). Confirm the existing `231 S. Bemiston Ave, Ste 800,
-   St. Louis` is real.
-4. **Phone(s)** — confirm office/mobile numbers and which to display where.
-5. **Deploy/DNS** — confirm GitHub Pages as host and whether to cut `pa-expert.com`
+   (→ no fabricated address). CV gives cities only.
+3. **§4.1 credential confirmations** — CLCP (yes/no), AREA title (President vs.
+   President-Elect), ABVE board (yes/no), mobile phone (publish or not).
+4. **Deploy/DNS** — confirm GitHub Pages as host and whether to cut `pa-expert.com`
    DNS over now or stage on the Pages URL first.
+
+**Resolved from CV (no longer open):** email `jason@pa-expert.com`; office phone
+`877-882-9778`; LinkedIn `/in/pa-expert`; Facebook `/Purinton.Analytics`; X `@PurintonExpert`.
 
 Launch tasks: Web3Forms wiring + spam honeypot, real email throughout, favicon +
 OG PNG, rebuild, local verification on preview server (`:8123`), validate
