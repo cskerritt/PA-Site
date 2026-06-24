@@ -104,15 +104,16 @@ CV-verified facts to bake into `build.py`:
 9. **Contact (CV):** phone **877-882-9778**; email **jason@pa-expert.com**; LinkedIn **linkedin.com/in/pa-expert**; Facebook **facebook.com/Purinton.Analytics**; X **@PurintonExpert**. (Generated site's `info@` email, `/in/purintonanalytics` LinkedIn, and `(913) 484-4346` mobile are NOT on the CV — correct/confirm.)
 10. **Practice areas (4 → ~13):** Personal Injury, Workers' Compensation, Employment Litigation, Family Law, Medical Malpractice, Motor Vehicle/Trucking, Premises Liability, Product Liability, Labor Law (incl. FELA/railroad — CV-supported), Long-Term Disability, Social Security Disability (CV-supported), Wrongful Death, Veteran's Disability. *(PI, workers' comp, family law, SSDI, FELA/railroad, long-haul trucking are CV-evidenced; the rest derive from the live site's own marketing — acceptable for service pages, grounded in his actual methodology.)*
 
-### 4.1 Discrepancies to confirm with the user (live site vs. CV)
-The site ships the **CV-conservative** version of each until confirmed:
-| Claim | Live site says | CV says | Ship until confirmed |
+### 4.1 Discrepancies — RESOLVED by user (2026-06-24)
+Surfaced because the live site and CV conflicted; the user confirmed the current
+state, so the site now **publishes the upgraded version** of the first three:
+| Claim | CV said | User confirmed (2026-06-24) | Now published |
 |---|---|---|---|
-| CLCP credential | Lists **CLCP** | Not present | **Omit CLCP** |
-| AREA role | "President" | "President-Elect (2025)" | "Board of Directors / President-Elect, AREA" |
-| ABVE board | "Board of Directors" | Fellow only | "Fellow, ABVE" |
-| Mobile phone | `(913) 484-4346` on draft | Not on CV | Office line only |
-| St. Louis street address | `231 S. Bemiston Ave, Ste 800` | Cities only | No street address / "by appointment" |
+| CLCP credential | Not present | **Yes — holds CLCP** | CLCP added to creds string, schema, About & Credentials |
+| AREA role | "President-Elect (2025)" | **President now** | "President, Board of Directors, AREA" |
+| ABVE board | Fellow only | **Yes — on the board** | "Board of Directors & Fellow, ABVE" |
+| Mobile phone | Not on CV | (not asked) | Office line only |
+| St. Louis street address | Cities only | pending real addresses | No street address / "by appointment" |
 
 **Accuracy guardrail:** Do **not** emit fabricated `PostalAddress`/`GeoCoordinates`
 for any office without a confirmed street address. Offices without a verified

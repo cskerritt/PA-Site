@@ -31,7 +31,7 @@ SITE = {
     "domain": "https://pa-expert.com",
     "tagline": "Vocational Expert & Life Care Planning Services",
     "principal": "Jason C. Purinton",
-    "principal_creds": "LPC, CRC, CVE, ABVE/F, IPEC",
+    "principal_creds": "LPC, CRC, CVE, CLCP, ABVE/F, IPEC",
     "phone_display": "(877) 882-9778",
     "phone_e164": "+18778829778",
     "email": "jason@pa-expert.com",
@@ -405,6 +405,7 @@ def person_schema():
         '{"@type":"EducationalOccupationalCredential","credentialCategory":"Licensed Professional Counselor (LPC)"},'
         '{"@type":"EducationalOccupationalCredential","credentialCategory":"Certified Rehabilitation Counselor (CRC)"},'
         '{"@type":"EducationalOccupationalCredential","credentialCategory":"Certified Vocational Evaluator (CVE)"},'
+        '{"@type":"EducationalOccupationalCredential","credentialCategory":"Certified Life Care Planner (CLCP)"},'
         '{"@type":"EducationalOccupationalCredential","credentialCategory":"Fellow, American Board of Vocational Experts (ABVE/F)"},'
         '{"@type":"EducationalOccupationalCredential","credentialCategory":"Forensic Vocational Expert (FVE)"},'
         '{"@type":"EducationalOccupationalCredential","credentialCategory":"International Psychometric Evaluator, Certified (IPEC)"},'
@@ -497,7 +498,7 @@ def credential_strip(title="Memberships &amp; professional listings", alt=False)
 # ---- HOME ----------------------------------------------------------------- #
 
 def home_body():
-    creds = ["LPC", "CRC", "CVE", "ABVE/F", "FVE", "IPEC", "RN"]
+    creds = ["LPC", "CRC", "CVE", "CLCP", "ABVE/F", "FVE", "IPEC", "RN"]
     chips = "".join(f'<span class="chip">{c}</span>' for c in creds)
     stats = [
         ("3,000+", "Social Security disability hearings testified across the U.S."),
@@ -624,6 +625,7 @@ def about_body():
         ("Licensed Professional Counselor (Missouri)", "LPC"),
         ("Certified Rehabilitation Counselor", "CRC"),
         ("Certified Vocational Evaluator", "CVE"),
+        ("Certified Life Care Planner", "CLCP"),
         ("Fellow &amp; Board Certified, American Board of Vocational Experts", "ABVE/F"),
         ("Forensic Vocational Expert, Am. Rehabilitation Economics Association", "FVE"),
         ("International Psychometric Evaluator, Certified", "IPEC"),
@@ -690,9 +692,9 @@ def about_body():
 
       <h2>Professional leadership</h2>
       <ul class="check-list">
-        <li>{icon('check')} Board of Directors, President-Elect (2025) &mdash; American Rehabilitation Economics Association</li>
+        <li>{icon('check')} President, Board of Directors &mdash; American Rehabilitation Economics Association</li>
+        <li>{icon('check')} Board of Directors &amp; Fellow &mdash; American Board of Vocational Experts</li>
         <li>{icon('check')} Board of Directors, Forensic Section Representative (2022&ndash;2024) &mdash; International Association of Rehabilitation Professionals</li>
-        <li>{icon('check')} Fellow (2025) &mdash; American Board of Vocational Experts</li>
       </ul>
 
       <h2>Professional focus</h2>
@@ -1463,6 +1465,7 @@ def credentials_body():
         ("LPC", "Licensed Professional Counselor", "Missouri Division of Professional Registration"),
         ("CRC", "Certified Rehabilitation Counselor", "Commission on Rehabilitation Counselor Certification"),
         ("CVE", "Certified Vocational Evaluator", "Commission on Rehabilitation Counselor Certification"),
+        ("CLCP", "Certified Life Care Planner", "International Commission on Health Care Certification"),
         ("ABVE/F", "Fellow &amp; Board Certified", "American Board of Vocational Experts (2025)"),
         ("IPEC", "International Psychometric Evaluator, Certified", "American Board of Vocational Experts (2025)"),
         ("FVE", "Forensic Vocational Expert", "American Rehabilitation Economics Association"),
@@ -1483,8 +1486,8 @@ def credentials_body():
     state_html = "".join(f'<li>{icon("check")}<div><strong>{t}</strong><p>{d}</p></div></li>' for t, d in state_quals)
 
     leadership = [
-        ("American Rehabilitation Economics Association", "Board of Directors, President-Elect (2025); Forensic Vocational Expert"),
-        ("American Board of Vocational Experts", "Fellow (2025); Member"),
+        ("American Rehabilitation Economics Association", "President, Board of Directors; Forensic Vocational Expert"),
+        ("American Board of Vocational Experts", "Board of Directors; Fellow &amp; Board Certified (2025)"),
         ("International Association of Rehabilitation Professionals", "Board of Directors, Forensic Section Representative (2022&ndash;2024); Member"),
         ("Association for Assessment and Research in Counseling", "Member"),
     ]
@@ -1525,7 +1528,7 @@ def credentials_body():
           <dt>Credentials</dt><dd>{SITE['principal_creds']}</dd>
           <dt>Licensure</dt><dd>Missouri, Kansas, Nebraska</dd>
           <dt>SSA hearings</dt><dd>3,000+ testified</dd>
-          <dt>Leadership</dt><dd>AREA President-Elect (2025)</dd>
+          <dt>Leadership</dt><dd>President, AREA</dd>
         </dl>
         <a href="/contact/" class="btn btn-block">Request a Consultation</a>
         <a href="/about/" class="card-link">About Jason &rarr;</a>
@@ -2091,7 +2094,7 @@ def build_pages():
     b, s = about_body()
     pages.append(dict(path="/about/",
                       title="About Jason C. Purinton, Vocational Expert | Purinton Analytics",
-                      description="Jason C. Purinton, LPC, CRC, CVE, FVE, ABVE/F, IPEC — a licensed "
+                      description="Jason C. Purinton, LPC, CRC, CVE, CLCP, ABVE/F, IPEC — a licensed "
                       "counselor and board-certified vocational expert and life care planner serving "
                       "attorneys nationwide since 2019.",
                       active="/about/", body=b, schema=s,
@@ -2158,7 +2161,7 @@ def build_pages():
     b, s = credentials_body()
     pages.append(dict(path="/credentials/",
                       title="Credentials, Certifications & Affiliations | Purinton Analytics",
-                      description="Jason C. Purinton's credentials — LPC, CRC, CVE, ABVE/F, IPEC, FVE, RN — "
+                      description="Jason C. Purinton's credentials — LPC, CRC, CVE, CLCP, ABVE/F, IPEC, FVE, RN — "
                       "with state qualifications in Missouri, Kansas, and Nebraska, memberships, and leadership.",
                       active="/credentials/", body=b, schema=s,
                       breadcrumb=make_breadcrumb("/credentials/", "Credentials")))
@@ -2339,7 +2342,7 @@ Purinton Analytics serves attorneys and insurers across {len(STATES)} states and
 {insight_lines}
 
 ## About
-- [About Jason C. Purinton]({SITE['domain']}/about/): Credentials — Licensed Professional Counselor (LPC), Certified Rehabilitation Counselor (CRC), Certified Vocational Evaluator (CVE), Fellow of the American Board of Vocational Experts (ABVE/F), Forensic Vocational Expert (FVE), International Psychometric Evaluator Certified (IPEC), Registered Nurse (RN). Based in Kansas City, Missouri; offices in St. Louis, Denver, and Chicago. Board of Directors, President-Elect (2025) of the American Rehabilitation Economics Association.
+- [About Jason C. Purinton]({SITE['domain']}/about/): Credentials — Licensed Professional Counselor (LPC), Certified Rehabilitation Counselor (CRC), Certified Vocational Evaluator (CVE), Certified Life Care Planner (CLCP), Fellow of the American Board of Vocational Experts (ABVE/F), Forensic Vocational Expert (FVE), International Psychometric Evaluator Certified (IPEC), Registered Nurse (RN). Based in Kansas City, Missouri; offices in St. Louis, Denver, and Chicago. President of the Board of Directors of the American Rehabilitation Economics Association; Board of Directors of the American Board of Vocational Experts.
 - [Credentials & Affiliations]({SITE['domain']}/credentials/): Full credentials, state qualifications (Missouri, Kansas, Nebraska), memberships, and leadership.
 """
     open(os.path.join(ROOT, "llms.txt"), "w").write(llms)
