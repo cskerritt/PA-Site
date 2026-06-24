@@ -44,6 +44,9 @@ SITE = {
     "facebook": "https://www.facebook.com/Purinton.Analytics",
     "x": "https://x.com/PurintonExpert",
     "theme": "#012262",
+    # Web3Forms access key — paste the real key before launch (see Task 4.3).
+    # Get one free at https://web3forms.com (tie it to jason@pa-expert.com).
+    "web3forms_key": "",
 }
 
 BUILD_YEAR = date.today().year
@@ -1251,10 +1254,15 @@ def contact_body():
 <section class="section">
   <div class="container split">
     <div class="split-main">
-      <form class="contact-form" action="https://formspree.io/f/your-form-id" method="POST"
-            aria-label="Consultation request">
+      <form class="contact-form" action="https://api.web3forms.com/submit" method="POST"
+            aria-label="Consultation request" data-ajax="web3forms">
+        <input type="hidden" name="access_key" value="{SITE['web3forms_key']}">
+        <input type="hidden" name="subject" value="New consultation request — pa-expert.com">
+        <input type="hidden" name="from_name" value="pa-expert.com contact form">
+        <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" style="display:none !important" aria-hidden="true">
         <p class="form-note">Fields marked * are required. Do not include privileged or confidential
            case details in this initial message.</p>
+        <div class="form-status" role="status" aria-live="polite" hidden></div>
         <div class="form-row">
           <label>Full name *<input type="text" name="name" required autocomplete="name"></label>
           <label>Firm / Organization<input type="text" name="firm" autocomplete="organization"></label>
@@ -2362,6 +2370,9 @@ def main():
     for w in written:
         print("  ", w)
     print("Wrote sitemap.xml, robots.txt, llms.txt, site.webmanifest, CNAME")
+    if not SITE["web3forms_key"]:
+        print("WARNING: SITE['web3forms_key'] is empty — the contact form will not "
+              "deliver until a real Web3Forms access key is set (see launch checklist).")
 
 
 if __name__ == "__main__":

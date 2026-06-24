@@ -77,10 +77,15 @@
 <section class="section">
   <div class="container split">
     <div class="split-main">
-      <form class="contact-form" action="https://formspree.io/f/your-form-id" method="POST"
-            aria-label="Consultation request">
+      <form class="contact-form" action="https://api.web3forms.com/submit" method="POST"
+            aria-label="Consultation request" data-ajax="web3forms">
+        <input type="hidden" name="access_key" value="">
+        <input type="hidden" name="subject" value="New consultation request — pa-expert.com">
+        <input type="hidden" name="from_name" value="pa-expert.com contact form">
+        <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" style="display:none !important" aria-hidden="true">
         <p class="form-note">Fields marked * are required. Do not include privileged or confidential
            case details in this initial message.</p>
+        <div class="form-status" role="status" aria-live="polite" hidden></div>
         <div class="form-row">
           <label>Full name *<input type="text" name="name" required autocomplete="name"></label>
           <label>Firm / Organization<input type="text" name="firm" autocomplete="organization"></label>
