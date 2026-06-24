@@ -16,6 +16,10 @@ import shutil
 import unicodedata
 from datetime import date
 
+from content_practice import (
+    NEW_PRACTICE_AREAS, NEW_PRACTICE_ICONS, NEW_PRACTICE_TITLES, NEW_DETAILS,
+)
+
 # --------------------------------------------------------------------------- #
 #  Site-wide configuration
 # --------------------------------------------------------------------------- #
@@ -430,6 +434,10 @@ PRACTICE_ICONS = {
     "/practice-areas/employment-litigation/": "users",
     "/practice-areas/family-law/": "scale",
 }
+
+# Merge in the expanded practice areas (content_practice.py).
+PRACTICE_AREAS = PRACTICE_AREAS + NEW_PRACTICE_AREAS
+PRACTICE_ICONS.update(NEW_PRACTICE_ICONS)
 
 
 def card_grid(items, icon_map=None):
@@ -1188,6 +1196,9 @@ DETAILS = {
     },
 }
 
+# Merge in the expanded practice-area detail pages (content_practice.py).
+DETAILS.update(NEW_DETAILS)
+
 
 # ---- CONTACT -------------------------------------------------------------- #
 
@@ -1810,12 +1821,14 @@ def build_pages():
         "/practice-areas/employment-litigation/": "Employment Litigation Vocational Expert | Purinton Analytics",
         "/practice-areas/family-law/": "Family Law Earning Capacity Evaluations | Purinton Analytics",
     }
+    titles.update(NEW_PRACTICE_TITLES)
     for path, cfg in DETAILS.items():
         cfg["path"] = path
         b, s = detail_body(cfg)
         label = cfg["h1"].replace("&amp;", "&")
         active = "/services/" if path.startswith("/services/") else "/practice-areas/"
-        pages.append(dict(path=path, title=titles[path], description=cfg["lead"],
+        default_title = label + " | Purinton Analytics"
+        pages.append(dict(path=path, title=titles.get(path, default_title), description=cfg["lead"],
                           active=active, body=b, schema=s,
                           breadcrumb=make_breadcrumb(path, label)))
 
@@ -1932,6 +1945,9 @@ def write_meta_files(pages):
     open(os.path.join(ROOT, "robots.txt"), "w").write(robots)
 
     # llms.txt — GEO / AI discovery
+    practice_lines = "\n".join(
+        f"- [{n.replace('&amp;', '&')}]({SITE['domain']}{h})" for n, h, _ in PRACTICE_AREAS
+    )
     llms = f"""# Purinton Analytics, LLC
 
 > Forensic vocational expert and life care planning practice providing objective, defensible
@@ -1954,10 +1970,7 @@ def write_meta_files(pages):
 - [Economic Damages]({SITE['domain']}/services/economic-damages/): Vocational and cost foundation for economic damages models.
 
 ## Practice Areas
-- [Personal Injury]({SITE['domain']}/practice-areas/personal-injury/)
-- [Workers' Compensation]({SITE['domain']}/practice-areas/workers-compensation/)
-- [Employment Litigation]({SITE['domain']}/practice-areas/employment-litigation/)
-- [Family Law]({SITE['domain']}/practice-areas/family-law/)
+{practice_lines}
 
 ## Service Areas
 Purinton Analytics serves attorneys and insurers across {len(STATES)} states and {sum(len(s["cities"]) for s in STATES)}+ cities and towns. Remote evaluation, deposition, and trial testimony are available throughout.
