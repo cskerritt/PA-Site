@@ -59,6 +59,7 @@ NAV = [
     ("About", "/about/"),
     ("Services", "/services/"),
     ("Practice Areas", "/practice-areas/"),
+    ("Offices", "/offices/"),
     ("Locations", "/locations/"),
     ("Contact", "/contact/"),
 ]
@@ -1315,6 +1316,101 @@ def not_found_body():
 """, []
 
 
+# ---- METRO OFFICES -------------------------------------------------------- #
+
+def local_business_schema(o):
+    """LocalBusiness schema. Emits PostalAddress/geo ONLY when a real street
+    address is set on the office; otherwise an honest areaServed-only record."""
+    s = (
+        '{"@context":"https://schema.org","@type":"ProfessionalService",'
+        '"name":"Purinton Analytics \\u2014 %s","parentOrganization":{"@id":"%s/#organization"},'
+        '"url":"%s/offices/%s/","telephone":"%s","email":"%s","priceRange":"$$$",'
+        '"areaServed":{"@type":"City","name":"%s, %s"}'
+        % (o["city"], SITE["domain"], SITE["domain"], o["slug"],
+           SITE["phone_e164"], SITE["email"], o["city"], o["region"])
+    )
+    if o.get("address"):
+        s += (
+            ',"address":{"@type":"PostalAddress","streetAddress":"%s",'
+            '"addressLocality":"%s","addressRegion":"%s","addressCountry":"US"}'
+            % (o["address"], o["city"], o["region"])
+        )
+    return s + "}"
+
+
+def office_body(o):
+    locality = "Meetings are by appointment" if not o.get("address") else o["address"]
+    svc_pills = "".join(f'<a class="pill" href="{h}">{n}</a>' for n, h, _ in SERVICES)
+    body = f"""
+{page_hero("Office", f"{o['city']} vocational expert &amp; life care planning",
+           o["blurb"])}
+
+<section class="section">
+  <div class="container split">
+    <div class="split-main">
+      <figure class="office-skyline">
+        <img src="/assets/img/brand/{o['skyline']}" alt="{o['city']} skyline" width="800" height="533" loading="lazy">
+      </figure>
+      <h2>Serving {o['city']} &amp; {o['region_full']}</h2>
+      <p>Purinton Analytics provides objective vocational expert evaluations and life care planning to
+         plaintiff and defense counsel in {o['city']} and across {o['region_full']}. Jason Purinton
+         personally handles each engagement &mdash; from records review and evaluation through report
+         writing, deposition, and trial testimony.</p>
+      <p>{locality}. Remote evaluation, deposition, and trial testimony are available throughout the
+         region and nationwide.</p>
+      <h2>Services available locally</h2>
+      <div class="pill-row" style="justify-content:flex-start">{svc_pills}</div>
+    </div>
+    <aside class="split-aside">
+      <div class="aside-card">
+        <h3>Contact this office</h3>
+        <dl class="aside-dl">
+          <dt>Phone</dt><dd><a href="tel:{SITE['phone_e164']}">{SITE['phone_display']}</a></dd>
+          <dt>Email</dt><dd><a href="mailto:{SITE['email']}">{SITE['email']}</a></dd>
+          <dt>Office</dt><dd>{o['city']}, {o['region']}</dd>
+          <dt>Other offices</dt><dd>{OFFICE_CITIES}</dd>
+        </dl>
+        <a href="/contact/" class="btn btn-block">Request a Consultation</a>
+      </div>
+    </aside>
+  </div>
+</section>
+
+{cta_band()}
+"""
+    return body, [org_schema(), local_business_schema(o)]
+
+
+def offices_hub_body():
+    cards = ""
+    for o in OFFICES:
+        cards += f"""
+      <a class="office-card" href="/offices/{o['slug']}/">
+        <img src="/assets/img/brand/{o['skyline']}" alt="{o['city']} skyline" width="800" height="533" loading="lazy">
+        <div class="office-card-body">
+          <h3>{o['city']}, {o['region']}</h3>
+          <p>{o['blurb']}</p>
+          <span class="card-link">{o['city']} office &rarr;</span>
+        </div>
+      </a>"""
+    body = f"""
+{page_hero("Offices", "Our offices",
+           "Purinton Analytics serves attorneys and insurers from offices in Kansas City, St. Louis, "
+           "Denver, and Chicago &mdash; with remote evaluation, deposition, and trial testimony available "
+           "nationwide and in Canada.")}
+
+<section class="section">
+  <div class="container">
+    <div class="office-grid">{cards}
+    </div>
+  </div>
+</section>
+
+{cta_band()}
+"""
+    return body, [org_schema()]
+
+
 # --------------------------------------------------------------------------- #
 #  Locations (programmatic local SEO)
 # --------------------------------------------------------------------------- #
@@ -1832,6 +1928,24 @@ def build_pages():
                           active=active, body=b, schema=s,
                           breadcrumb=make_breadcrumb(path, label)))
 
+    # Metro offices hub + per-office pages
+    b, s = offices_hub_body()
+    pages.append(dict(path="/offices/",
+                      title="Our Offices — Kansas City, St. Louis, Denver & Chicago | Purinton Analytics",
+                      description="Purinton Analytics serves attorneys from offices in Kansas City, "
+                      "St. Louis, Denver, and Chicago, with remote evaluation and testimony nationwide.",
+                      active="/offices/", body=b, schema=s,
+                      breadcrumb=make_breadcrumb("/offices/", "Offices")))
+    for o in OFFICES:
+        path = f"/offices/{o['slug']}/"
+        b, s = office_body(o)
+        pages.append(dict(path=path,
+                          title=f"{o['city']} Vocational Expert & Life Care Planner | Purinton Analytics",
+                          description=f"Vocational expert and life care planning services for {o['city']}, "
+                          f"{o['region_full']} attorneys — the {o['city']} office of Purinton Analytics.",
+                          active="/offices/", body=b, schema=s,
+                          breadcrumb=make_breadcrumb(path, f"{o['city']} Office")))
+
     b, s = contact_body()
     pages.append(dict(path="/contact/",
                       title="Contact & Request a Consultation | Purinton Analytics",
@@ -1948,6 +2062,10 @@ def write_meta_files(pages):
     practice_lines = "\n".join(
         f"- [{n.replace('&amp;', '&')}]({SITE['domain']}{h})" for n, h, _ in PRACTICE_AREAS
     )
+    office_lines = "\n".join(
+        f"- [{o['city']}, {o['region']}]({SITE['domain']}/offices/{o['slug']}/): {o['blurb']}"
+        for o in OFFICES
+    )
     llms = f"""# Purinton Analytics, LLC
 
 > Forensic vocational expert and life care planning practice providing objective, defensible
@@ -1971,6 +2089,10 @@ def write_meta_files(pages):
 
 ## Practice Areas
 {practice_lines}
+
+## Offices
+Meetings by appointment; remote evaluation, deposition, and trial testimony nationwide.
+{office_lines}
 
 ## Service Areas
 Purinton Analytics serves attorneys and insurers across {len(STATES)} states and {sum(len(s["cities"]) for s in STATES)}+ cities and towns. Remote evaluation, deposition, and trial testimony are available throughout.

@@ -244,6 +244,24 @@ p { margin: 0 0 1rem; }
 .split-main p { color: #2b3a4d; }
 .split-aside { position: sticky; top: 100px; }
 .about-portrait { width: 100%; border-radius: var(--radius); display: block; margin-bottom: 1.2rem; box-shadow: var(--shadow-md); }
+
+/* ---------- Offices ---------- */
+.office-skyline { margin: 0 0 1.6rem; }
+.office-skyline img { width: 100%; border-radius: var(--radius); box-shadow: var(--shadow-sm); aspect-ratio: 800 / 533; object-fit: cover; }
+.office-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.6rem; }
+.office-card {
+  display: flex; flex-direction: column; background: var(--white); border: 1px solid var(--line);
+  border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-sm);
+  transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease; color: var(--ink);
+}
+.office-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: #d4ddea; }
+.office-card img { width: 100%; aspect-ratio: 800 / 360; object-fit: cover; display: block; }
+.office-card-body { padding: 1.3rem 1.4rem 1.5rem; }
+.office-card-body h3 { color: var(--navy-900); margin-bottom: .3rem; }
+.office-card-body p { color: var(--slate); font-size: .95rem; margin-bottom: .8rem; }
+.office-card .card-link { color: var(--navy-600); font-weight: 600; font-size: .92rem; }
+.office-card:hover .card-link { color: var(--brand-500); }
+@media (max-width: 760px) { .office-grid { grid-template-columns: 1fr; } }
 .aside-card { background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); padding: 1.5rem; box-shadow: var(--shadow-sm); }
 .aside-card h3 { color: var(--navy-900); }
 .aside-dl { display: grid; grid-template-columns: 1fr; gap: .1rem; margin: 0 0 1.2rem; }
