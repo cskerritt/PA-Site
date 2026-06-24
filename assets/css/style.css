@@ -95,6 +95,9 @@ p { margin: 0 0 1rem; }
 .site-header.scrolled { box-shadow: var(--shadow-sm); }
 .header-inner { display: flex; align-items: center; justify-content: space-between; height: 76px; gap: 1rem; }
 .brand { display: flex; align-items: center; gap: .7rem; }
+.brand-logo { height: 44px; width: auto; display: block; }
+.footer-logo { height: 46px; width: auto; display: block; margin-bottom: .9rem; }
+@media (max-width: 480px) { .brand-logo { height: 38px; } }
 .brand-mark {
   width: 42px; height: 42px; border-radius: 10px; display: grid; place-items: center;
   background: linear-gradient(145deg, var(--navy-700), var(--navy-900)); color: var(--brand-400);
