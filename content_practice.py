@@ -66,9 +66,9 @@ _ENTRIES = [
         "clipboard",
         "Medical Malpractice Vocational Expert | Purinton Analytics",
         "Medical malpractice vocational &amp; life care planning experts",
-        "Objective vocational and life care planning opinions in medical malpractice cases — quantifying how a negligent injury affects a person's ability to work and the lifetime cost of care.",
+        "Objective vocational and life care planning opinions in medical malpractice cases - quantifying how a negligent injury affects a person's ability to work and the lifetime cost of care.",
         [
-            "When negligent medical care leaves a patient with lasting physical or cognitive impairment, the vocational impact can be as significant as the medical harm. Purinton Analytics evaluates how the resulting limitations affect employability, access to the labor market, and earning capacity, and — where catastrophic injury is involved — projects the future cost of care through a life care plan.",
+            "When negligent medical care leaves a patient with lasting physical or cognitive impairment, the vocational impact can be as significant as the medical harm. Purinton Analytics evaluates how the resulting limitations affect employability, access to the labor market, and earning capacity, and - where catastrophic injury is involved - projects the future cost of care through a life care plan.",
             "Because Jason Purinton is both a licensed counselor and a registered nurse as well as a board-certified vocational expert, he is able to connect the medical record to functional capacity and real-world labor-market data, producing opinions that are clinically grounded and defensible for plaintiff or defense counsel.",
         ],
         [
@@ -79,7 +79,7 @@ _ENTRIES = [
         ],
         [
             ("How is a vocational opinion different from a medical opinion in a malpractice case?",
-             "<p>A treating physician or medical expert addresses diagnosis, causation, and the standard of care. A vocational expert takes the medical restrictions as a starting point and analyzes their real-world effect on employability, access to the labor market, and earning capacity — and, in catastrophic cases, the future cost of care.</p>"),
+             "<p>A treating physician or medical expert addresses diagnosis, causation, and the standard of care. A vocational expert takes the medical restrictions as a starting point and analyzes their real-world effect on employability, access to the labor market, and earning capacity - and, in catastrophic cases, the future cost of care.</p>"),
             ("Do you evaluate both economic loss and future care?",
              "<p>Yes. We can provide a vocational and earning-capacity analysis, a life care plan projecting future care costs, or both, depending on the issues in the case.</p>"),
             ("Can you be retained by either side?",
@@ -93,7 +93,7 @@ _ENTRIES = [
         "route",
         "Motor Vehicle &amp; Trucking Accident Vocational Expert | Purinton Analytics",
         "Motor vehicle &amp; trucking accident vocational experts",
-        "Vocational expert and life care planning opinions in motor-vehicle and commercial-truck injury cases — quantifying lost earning capacity and the future cost of care.",
+        "Vocational expert and life care planning opinions in motor-vehicle and commercial-truck injury cases - quantifying lost earning capacity and the future cost of care.",
         [
             "Serious motor-vehicle and commercial-truck collisions frequently produce orthopedic, spinal, and traumatic-brain injuries that change what a person can do for a living. Purinton Analytics evaluates how those injuries affect employability, transferable skills, and earning capacity, and projects future care needs where the injury is catastrophic.",
             "Commercial-trucking cases often involve additional questions about a driver's fitness for safety-sensitive duties and the wage structure of the trucking labor market. We analyze the specific occupational demands and labor-market data that apply, producing opinions suited to either plaintiff or defense counsel.",
@@ -120,9 +120,9 @@ _ENTRIES = [
         "shield",
         "Premises Liability Vocational Expert | Purinton Analytics",
         "Premises liability vocational experts",
-        "Objective vocational and earning-capacity opinions in premises-liability cases — slip-and-fall, inadequate maintenance, and other unsafe-condition injuries.",
+        "Objective vocational and earning-capacity opinions in premises-liability cases - slip-and-fall, inadequate maintenance, and other unsafe-condition injuries.",
         [
-            "Premises-liability injuries — falls, struck-by events, and other unsafe-condition incidents — can produce lasting orthopedic and neurological limitations that affect a person's ability to work. Purinton Analytics evaluates how those limitations change employability and earning capacity, grounded in the medical record and accepted vocational methodology.",
+            "Premises-liability injuries - falls, struck-by events, and other unsafe-condition incidents - can produce lasting orthopedic and neurological limitations that affect a person's ability to work. Purinton Analytics evaluates how those limitations change employability and earning capacity, grounded in the medical record and accepted vocational methodology.",
             "We establish a defensible pre-incident earning-capacity baseline, identify the occupations realistically available within the person's restrictions, and quantify any wage loss, supporting plaintiff or defense counsel with the same objective standards.",
         ],
         [
@@ -133,7 +133,7 @@ _ENTRIES = [
         ],
         [
             ("What does a vocational expert add to a premises-liability case?",
-             "<p>A vocational expert objectively connects the medical restrictions to their real-world effect on the person's ability to work and earn — turning an injury into a defensible measure of employability and earning-capacity loss.</p>"),
+             "<p>A vocational expert objectively connects the medical restrictions to their real-world effect on the person's ability to work and earn - turning an injury into a defensible measure of employability and earning-capacity loss.</p>"),
             ("Is an in-person evaluation required?",
              "<p>Not always. Many opinions can be developed from the records; where a vocational evaluation and interview add value, they can be conducted in person or remotely.</p>"),
             ("Do you work for plaintiffs and defendants?",
@@ -147,7 +147,7 @@ _ENTRIES = [
         "doc",
         "Product Liability Vocational Expert | Purinton Analytics",
         "Product liability vocational experts",
-        "Vocational expert and life care planning opinions in product-liability cases — quantifying how a defective-product injury affects the ability to work and the future cost of care.",
+        "Vocational expert and life care planning opinions in product-liability cases - quantifying how a defective-product injury affects the ability to work and the future cost of care.",
         [
             "Defective-product injuries can range from amputations and burns to traumatic-brain and spinal injuries, each with distinct vocational consequences. Purinton Analytics evaluates how the resulting impairment affects employability, transferable skills, and earning capacity, and, in catastrophic cases, projects the lifetime cost of care.",
             "Our opinions are built on accepted assessment methods and published occupational and labor-market data, so they are transparent, reproducible, and defensible for either plaintiff or defense counsel.",
@@ -160,7 +160,7 @@ _ENTRIES = [
         ],
         [
             ("How do you approach a catastrophic product injury such as an amputation?",
-             "<p>We assess the functional limitations, analyze the occupations realistically available within those limitations, quantify any earning-capacity loss, and — where appropriate — prepare a life care plan projecting prosthetic, medical, and support costs over the lifespan.</p>"),
+             "<p>We assess the functional limitations, analyze the occupations realistically available within those limitations, quantify any earning-capacity loss, and - where appropriate - prepare a life care plan projecting prosthetic, medical, and support costs over the lifespan.</p>"),
             ("Are your methods consistent regardless of who retains you?",
              "<p>Yes. The assessment methods, data sources, and standards are the same whether we are retained by plaintiff or defense counsel.</p>"),
             ("Can you testify at deposition and trial?",
@@ -174,10 +174,10 @@ _ENTRIES = [
         "globe",
         "FELA &amp; Railroad Worker Vocational Expert | Purinton Analytics",
         "Labor, FELA &amp; railroad vocational experts",
-        "Vocational expert opinions for FELA railroad-worker injuries and other labor cases — quantifying lost earning capacity within the specific demands of the work.",
+        "Vocational expert opinions for FELA railroad-worker injuries and other labor cases - quantifying lost earning capacity within the specific demands of the work.",
         [
             "Railroad-worker injuries under the Federal Employers' Liability Act (FELA) and other labor injuries often involve physically demanding, well-compensated occupations with specific safety and physical requirements. Purinton Analytics evaluates how an injury affects the worker's ability to return to railroad or comparable employment and quantifies the resulting earning-capacity loss.",
-            "We analyze the occupational demands of the worker's craft, the realistic alternatives within their restrictions, and the wage structure of the relevant labor market — producing opinions that hold up for either plaintiff or defense counsel.",
+            "We analyze the occupational demands of the worker's craft, the realistic alternatives within their restrictions, and the wage structure of the relevant labor market - producing opinions that hold up for either plaintiff or defense counsel.",
         ],
         [
             ("Earning-capacity loss", "The wage gap between pre-injury railroad or trade earnings and realistic post-injury options."),
@@ -201,10 +201,10 @@ _ENTRIES = [
         "calc",
         "Long-Term Disability Vocational Expert | Purinton Analytics",
         "Long-term disability vocational experts",
-        "Independent vocational review for long-term disability matters — evaluating own-occupation and any-occupation capacity against the medical record and labor market.",
+        "Independent vocational review for long-term disability matters - evaluating own-occupation and any-occupation capacity against the medical record and labor market.",
         [
             "Long-term disability disputes turn on whether a claimant can perform the material duties of their own occupation or, later in the claim, any occupation for which they are reasonably suited. Purinton Analytics provides independent vocational analysis of those questions, grounded in the medical restrictions and accepted occupational data.",
-            "We define the occupation as it is performed in the national economy, compare its demands to the claimant's documented capacity, and identify whether suitable alternative occupations exist — supporting insurers, claimants, or counsel with an objective opinion.",
+            "We define the occupation as it is performed in the national economy, compare its demands to the claimant's documented capacity, and identify whether suitable alternative occupations exist - supporting insurers, claimants, or counsel with an objective opinion.",
         ],
         [
             ("Own-occupation analysis", "Whether the claimant can perform the material duties of their occupation as performed in the national economy."),
@@ -214,7 +214,7 @@ _ENTRIES = [
         ],
         [
             ("What is the difference between own-occupation and any-occupation review?",
-             "<p>Own-occupation review asks whether the claimant can perform the duties of their specific occupation as it is performed in the national economy. Any-occupation review — typically applied after an initial benefit period — asks whether they can perform any occupation for which they are reasonably suited by education, training, and experience.</p>"),
+             "<p>Own-occupation review asks whether the claimant can perform the duties of their specific occupation as it is performed in the national economy. Any-occupation review - typically applied after an initial benefit period - asks whether they can perform any occupation for which they are reasonably suited by education, training, and experience.</p>"),
             ("Do you work for insurers or claimants?",
              "<p>Both. We provide independent vocational analysis using the same methodology regardless of who retains us.</p>"),
             ("Is this the same as a Social Security disability evaluation?",
@@ -228,9 +228,9 @@ _ENTRIES = [
         "users",
         "Social Security Disability Vocational Expert | Purinton Analytics",
         "Social Security disability vocational experts",
-        "Vocational expert analysis and testimony in Social Security disability matters — built on direct experience in thousands of SSA disability hearings.",
+        "Vocational expert analysis and testimony in Social Security disability matters - built on direct experience in thousands of SSA disability hearings.",
         [
-            "Jason Purinton serves as a forensic vocational rehabilitation expert witness for the Social Security Administration's Office of Disability Adjudication and Review and has testified in more than 3,000 Social Security disability hearings across the United States. That direct hearing experience informs a precise, framework-grounded approach to vocational issues in disability matters.",
+            "Jason Purinton serves as a forensic vocational rehabilitation expert witness for the Social Security Administration's Office of Disability Adjudication and Review, with extensive Social Security disability hearing testimony across the United States. That direct hearing experience informs a precise, framework-grounded approach to vocational issues in disability matters.",
             "We analyze residual functional capacity against the demands of past relevant work and the broader national economy, applying the SSA's sequential evaluation process, the Medical-Vocational Guidelines (the grids), and occupational data including the DOT, O*NET, and the Occupational Requirements Survey.",
         ],
         [
@@ -240,8 +240,8 @@ _ENTRIES = [
             ("Occupational data and job numbers", "Opinions on job descriptions and numbers supported by recognized occupational sources."),
         ],
         [
-            ("How much Social Security hearing experience do you have?",
-             "<p>Jason Purinton has testified in more than 3,000 Social Security disability hearings across the United States and serves as a vocational expert witness for the SSA's Office of Disability Adjudication and Review.</p>"),
+            ("What Social Security hearing experience does Purinton Analytics have?",
+             "<p>Jason Purinton serves as a vocational expert witness for the SSA's Office of Disability Adjudication and Review, with extensive Social Security disability hearing testimony across the United States.</p>"),
             ("Which frameworks and data do you apply?",
              "<p>The SSA sequential evaluation process and Medical-Vocational Guidelines, together with occupational data from the Dictionary of Occupational Titles, O*NET, and the Occupational Requirements Survey.</p>"),
             ("Can you assist counsel outside of hearing testimony?",
@@ -255,10 +255,10 @@ _ENTRIES = [
         "scale",
         "Wrongful Death Vocational Expert | Purinton Analytics",
         "Wrongful death vocational experts",
-        "Vocational foundation for wrongful-death damages — establishing the decedent's earning capacity and the value of lost household services.",
+        "Vocational foundation for wrongful-death damages - establishing the decedent's earning capacity and the value of lost household services.",
         [
             "In wrongful-death matters, the vocational expert establishes the foundation an economist needs: the decedent's pre-death earning capacity and worklife, and the nature and value of household and family services that have been lost. Purinton Analytics develops that foundation from the decedent's education, work history, and the relevant labor market.",
-            "We provide objective, well-documented opinions that support — and integrate cleanly with — the economic damages model, for plaintiff or defense counsel.",
+            "We provide objective, well-documented opinions that support - and integrate cleanly with - the economic damages model, for plaintiff or defense counsel.",
         ],
         [
             ("Earning-capacity foundation", "The decedent's realistic earning capacity based on education, work history, and labor-market data."),
@@ -268,7 +268,7 @@ _ENTRIES = [
         ],
         [
             ("What does a vocational expert provide in a wrongful-death case?",
-             "<p>We establish the decedent's earning-capacity foundation and the value of lost household services — the vocational inputs an economist uses to model economic damages.</p>"),
+             "<p>We establish the decedent's earning-capacity foundation and the value of lost household services - the vocational inputs an economist uses to model economic damages.</p>"),
             ("Do you work with the economist on the case?",
              "<p>Yes. Our opinions are structured to integrate with the economic damages analysis, whether we provide the vocational foundation, the economic framework, or coordinate with a retained economist.</p>"),
             ("Can you be retained by the defense?",
@@ -282,7 +282,7 @@ _ENTRIES = [
         "chart",
         "Veterans' Disability Vocational Expert | Purinton Analytics",
         "Veterans' disability vocational experts",
-        "Vocational evaluations for veterans — translating military experience and service-connected limitations into civilian employability and earning capacity.",
+        "Vocational evaluations for veterans - translating military experience and service-connected limitations into civilian employability and earning capacity.",
         [
             "Veterans' matters present a distinct vocational challenge: translating military training and experience into civilian occupational terms while accounting for service-connected physical and cognitive limitations. Purinton Analytics evaluates how those limitations affect a veteran's employability and earning capacity in the civilian labor market.",
             "Drawing on experience supporting transitioning service members, we analyze transferable military skills, identify civilian occupations consistent with the veteran's residual capacity, and quantify any earning-capacity loss using accepted occupational and labor-market data.",

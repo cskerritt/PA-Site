@@ -6,7 +6,7 @@ Produces a fast, fully static, SEO + GEO optimized marketing site.
 Run:  python3 build.py
 Output is written in-place (clean-URL directories with index.html).
 
-The generated HTML requires no build step to host — deploy the repo root
+The generated HTML requires no build step to host - deploy the repo root
 to any static host (GitHub Pages, Netlify, Cloudflare Pages, S3, etc.).
 """
 
@@ -44,7 +44,7 @@ SITE = {
     "facebook": "https://www.facebook.com/Purinton.Analytics",
     "x": "https://x.com/PurintonExpert",
     "theme": "#012262",
-    # Web3Forms access key — paste the real key before launch (see Task 4.3).
+    # Web3Forms access key - paste the real key before launch (see Task 4.3).
     # Get one free at https://web3forms.com (tie it to jason@pa-expert.com).
     "web3forms_key": "",
 }
@@ -92,7 +92,7 @@ PRACTICE_AREAS = [
      "Earning capacity and employability evaluations for support and imputation disputes."),
 ]
 
-# Physical metro offices (cities only — CV lists no street addresses).
+# Physical metro offices (cities only - CV lists no street addresses).
 # Set "address" to a real street to enable full LocalBusiness schema on that office.
 OFFICES = [
     {"slug": "kansas-city", "city": "Kansas City", "region": "MO", "region_full": "Missouri",
@@ -113,21 +113,6 @@ OFFICES = [
               "life care planning evaluations."},
 ]
 OFFICE_CITIES = " · ".join(o["city"] for o in OFFICES)
-
-# Professional memberships & third-party expert listings (monochrome credibility
-# strip). Shown as memberships/listings — not endorsements.
-AFFILIATIONS = [
-    ("association-ABVE-logo.webp", "American Board of Vocational Experts"),
-    ("association-AREA-logo.webp", "American Rehabilitation Economics Association"),
-    ("association-IARP-logo.webp", "International Association of Rehabilitation Professionals"),
-    ("association-CRCC-logo.webp", "Commission on Rehabilitation Counselor Certification"),
-    ("association-NBCC-logo.webp", "National Board for Certified Counselors"),
-    ("association-ICHCC-logo.webp", "International Commission on Health Care Certification"),
-    ("association-SEAK-logo.webp", "SEAK Expert Witness Directory"),
-    ("association-JurisPro-logo.webp", "JurisPro Expert Witness Directory"),
-    ("association-ALM-Law-logo.webp", "ALM / Law.com Expert Witness"),
-    ("association-Psychology-Today-logo.webp", "Psychology Today"),
-]
 
 # --------------------------------------------------------------------------- #
 #  HTML helpers
@@ -480,41 +465,17 @@ def card_grid(items, icon_map=None):
     return f'<div class="card-grid">{cards}\n    </div>'
 
 
-def credential_strip(title="Memberships &amp; professional listings", alt=False):
-    logos = "".join(
-        f'<li><img src="/assets/img/brand/{f}" alt="{n}" loading="lazy"></li>'
-        for f, n in AFFILIATIONS
-    )
-    cls = "section section-alt" if alt else "section"
-    return f"""
-<section class="{cls} credstrip">
-  <div class="container center">
-    <p class="eyebrow">{title}</p>
-    <ul class="credential-strip">{logos}</ul>
-  </div>
-</section>"""
-
-
 # ---- HOME ----------------------------------------------------------------- #
 
 def home_body():
     creds = ["LPC", "CRC", "CVE", "CLCP", "ABVE/F", "FVE", "IPEC", "RN"]
     chips = "".join(f'<span class="chip">{c}</span>' for c in creds)
-    stats = [
-        ("3,000+", "Social Security disability hearings testified across the U.S."),
-        ("Since 2018", "Forensic vocational evaluation &amp; testimony"),
-        ("4 offices", "Kansas City &middot; St. Louis &middot; Denver &middot; Chicago"),
-    ]
-    stat_html = "".join(
-        f'<div class="stat"><span class="stat-num">{n}</span><span class="stat-label">{l}</span></div>'
-        for n, l in stats
-    )
 
     why = [
         ("scale", "Objective &amp; defensible", "Every opinion is built on accepted methodology and the published data that holds up under cross-examination."),
         ("globe", "Plaintiff &amp; defense, nationwide", "Retained on both sides of the aisle in civil litigation across the United States and Canada."),
         ("doc", "Litigation-ready reports", "Clear, well-supported written opinions that translate complex vocational and medical facts for judges and juries."),
-        ("users", "A single, accountable expert", "You work directly with Jason Purinton from intake through testimony — not a rotating roster."),
+        ("users", "A single, accountable expert", "You work directly with Jason Purinton from intake through testimony - not a rotating roster."),
     ]
     why_html = ""
     for ic, t, d in why:
@@ -524,11 +485,11 @@ def home_body():
         "Frequently asked questions",
         [
             ("What does a vocational expert do?",
-             "<p>A vocational expert evaluates a person's ability to work and earn following an injury, illness, or other life event. The expert analyzes medical records, education, work history, transferable skills, and the local labor market to form an objective opinion on employability and earning capacity — opinions that are used as evidence in personal injury, workers' compensation, employment, and family law matters.</p>"),
+             "<p>A vocational expert evaluates a person's ability to work and earn following an injury, illness, or other life event. The expert analyzes medical records, education, work history, transferable skills, and the local labor market to form an objective opinion on employability and earning capacity - opinions that are used as evidence in personal injury, workers' compensation, employment, and family law matters.</p>"),
             ("What is a life care plan?",
              "<p>A life care plan is a comprehensive, evidence-based document that projects the future medical and non-medical needs of an individual with a catastrophic or chronic injury, along with the associated costs. It gives attorneys, courts, and families a defensible roadmap of the care required over a lifetime.</p>"),
             ("Do you work for plaintiffs or defendants?",
-             "<p>Both. Purinton Analytics is retained by both plaintiff and defense counsel. Our methodology and conclusions are the same regardless of who retains us — the goal is an objective, defensible opinion, not an advocacy position.</p>"),
+             "<p>Both. Purinton Analytics is retained by both plaintiff and defense counsel. Our methodology and conclusions are the same regardless of who retains us - the goal is an objective, defensible opinion, not an advocacy position.</p>"),
             ("What geographic areas do you serve?",
              "<p>We provide vocational expert and life care planning services for cases throughout the United States and Canada. Remote evaluation and testimony are available, and the firm is based in Kansas City, Missouri, with offices in St. Louis, Denver, and Chicago.</p>"),
             ("How do I retain Purinton Analytics for a case?",
@@ -543,7 +504,7 @@ def home_body():
       <p class="eyebrow">Forensic Vocational &amp; Life Care Planning Experts</p>
       <h1>Objective vocational expert &amp; life care planning opinions that hold up in court</h1>
       <p class="lead">Purinton Analytics provides attorneys and insurers with defensible evaluations of
-        employability, earning capacity, wage loss, and future cost of care — for plaintiff and defense
+        employability, earning capacity, wage loss, and future cost of care - for plaintiff and defense
         matters across the United States and Canada.</p>
       <div class="hero-actions">
         <a href="/contact/" class="btn">Request a Consultation</a>
@@ -559,24 +520,18 @@ def home_body():
           <span class="hero-card-role">Principal Vocational Expert &amp; Life Care Planner</span>
         </div>
       </div>
-      <p>A licensed counselor and registered nurse who is also a board-certified vocational expert —
+      <p>A licensed counselor and registered nurse who is also a board-certified vocational expert -
          pairing clinical insight with forensic methodology. Testifying in disability and civil
          litigation since 2018.</p>
       <ul class="hero-card-list">
         <li>{icon('check')} Fellow, American Board of Vocational Experts</li>
         <li>{icon('check')} Certified Rehabilitation Counselor &amp; Vocational Evaluator</li>
-        <li>{icon('check')} 3,000+ disability hearings; retained plaintiff &amp; defense</li>
+        <li>{icon('check')} Retained nationwide, plaintiff &amp; defense</li>
       </ul>
       <a href="/about/" class="card-link">Meet Jason &rarr;</a>
     </aside>
   </div>
 </section>
-
-<section class="stats-band">
-  <div class="container stats-grid">{stat_html}</div>
-</section>
-
-{credential_strip(alt=True)}
 
 <section class="section">
   <div class="container">
@@ -637,10 +592,10 @@ def about_body():
         for full, ab in creds
     )
     edu = [
-        ("M.S., Rehabilitation Counseling", "Emporia State University — 2018&ndash;2019, Phi Kappa Phi"),
-        ("B.S.N., Nursing (Registered Nurse)", "MidAmerica Nazarene University — 2016&ndash;2017"),
-        ("E.M.T.", "Johnson County Community College — 2014"),
-        ("B.S., Business (Communication Studies)", "University of Kansas — 1993&ndash;1997"),
+        ("M.S., Rehabilitation Counseling", "Emporia State University - 2018-2019, Phi Kappa Phi"),
+        ("B.S.N., Nursing (Registered Nurse)", "MidAmerica Nazarene University - 2016-2017"),
+        ("E.M.T.", "Johnson County Community College - 2014"),
+        ("B.S., Business (Communication Studies)", "University of Kansas - 1993-1997"),
     ]
     edu_html = "".join(f'<li><strong>{d}</strong><span>{s}</span></li>' for d, s in edu)
 
@@ -650,7 +605,7 @@ def about_body():
             ("What makes a vocational opinion defensible?",
              "<p>A defensible opinion is transparent and reproducible: it relies on accepted assessment methods, documented data sources, and clearly stated assumptions, so that another qualified expert reviewing the same records would reach a consistent conclusion. That discipline is what allows an opinion to survive cross-examination and <em>Daubert</em> or <em>Frye</em> challenges.</p>"),
             ("Will the same expert handle my case from start to finish?",
-             "<p>Yes. Jason Purinton personally handles each engagement — from records review and evaluation through report writing, deposition, and trial testimony.</p>"),
+             "<p>Yes. Jason Purinton personally handles each engagement - from records review and evaluation through report writing, deposition, and trial testimony.</p>"),
             ("Do you provide deposition and trial testimony?",
              "<p>Yes. Purinton Analytics has provided expert opinions and testimony in civil litigation across the United States and Canada since 2019, in both deposition and trial settings.</p>"),
         ],
@@ -659,7 +614,7 @@ def about_body():
     body = f"""
 {page_hero("About", "Jason C. Purinton, " + SITE['principal_creds'],
            "A licensed counselor and registered nurse who is also a board-certified vocational expert "
-           "&mdash; translating injury, disability, and loss into objective, defensible opinions.",
+           "- translating injury, disability, and loss into objective, defensible opinions.",
            secondary=("View Credentials", "/credentials/"))}
 
 <section class="section">
@@ -671,10 +626,10 @@ def about_body():
         evaluations of employability and earning capacity, comprehensive life care plans, and expert
         testimony in civil litigation.</p>
       <p>The firm was founded in {SITE['founded']} as Vocational Pros, LLC and was rebranded in 2024 as
-        Purinton Analytics to reflect a broader range of analytical services. Jason has testified in
-        <strong>more than 3,000 Social Security disability hearings</strong> across the United States and
-        serves as a forensic vocational rehabilitation expert witness for the Social Security
-        Administration&rsquo;s Office of Disability Adjudication and Review. Since 2019 he has also
+        Purinton Analytics to reflect a broader range of analytical services. Jason serves as a
+        forensic vocational rehabilitation expert witness for the Social Security
+        Administration&rsquo;s Office of Disability Adjudication and Review, with extensive Social
+        Security disability hearing testimony across the United States. Since 2019 he has also
         provided opinions and testimony in civil litigation nationwide, retained by both plaintiff and
         defense counsel.</p>
       <p>His clinical background as a licensed counselor and registered nurse, combined with
@@ -692,9 +647,9 @@ def about_body():
 
       <h2>Professional leadership</h2>
       <ul class="check-list">
-        <li>{icon('check')} President, Board of Directors &mdash; American Rehabilitation Economics Association</li>
-        <li>{icon('check')} Board of Directors &amp; Fellow &mdash; American Board of Vocational Experts</li>
-        <li>{icon('check')} Board of Directors, Forensic Section Representative (2022&ndash;2024) &mdash; International Association of Rehabilitation Professionals</li>
+        <li>{icon('check')} President, Board of Directors - American Rehabilitation Economics Association</li>
+        <li>{icon('check')} Board of Directors &amp; Fellow - American Board of Vocational Experts</li>
+        <li>{icon('check')} Board of Directors, Forensic Section Representative (2022-2024) - International Association of Rehabilitation Professionals</li>
       </ul>
 
       <h2>Professional focus</h2>
@@ -714,7 +669,6 @@ def about_body():
         <dl class="aside-dl">
           <dt>Principal</dt><dd>{SITE['principal']}</dd>
           <dt>Credentials</dt><dd>{SITE['principal_creds']}</dd>
-          <dt>SSA hearings</dt><dd>3,000+ testified</dd>
           <dt>Forensic practice since</dt><dd>2018</dd>
           <dt>Engagements</dt><dd>Plaintiff &amp; defense</dd>
           <dt>Service area</dt><dd>United States &amp; Canada</dd>
@@ -729,7 +683,6 @@ def about_body():
 </section>
 
 {faq_html}
-{credential_strip()}
 {cta_band()}
 """
     return body, [person_schema(), org_schema(), faq_schema]
@@ -740,7 +693,7 @@ def about_body():
 def services_index_body():
     body = f"""
 {page_hero("Services", "Vocational expert &amp; life care planning services",
-           "Objective, litigation-ready analysis across the full arc of a damages case — from "
+           "Objective, litigation-ready analysis across the full arc of a damages case - from "
            "employability and earning capacity to the lifetime cost of care.")}
 <section class="section">
   <div class="container">
@@ -852,11 +805,11 @@ DETAILS = {
     "/services/vocational-expert-witness/": {
         "eyebrow": "Service",
         "h1": "Vocational expert witness services",
-        "lead": "Objective, defensible evaluations of employability and earning capacity — and "
-                "credible expert testimony — for plaintiff and defense counsel nationwide.",
+        "lead": "Objective, defensible evaluations of employability and earning capacity - and "
+                "credible expert testimony - for plaintiff and defense counsel nationwide.",
         "schema_name": "Vocational Expert Witness Evaluation",
         "overview": [
-            "A vocational expert evaluates whether — and at what level — an individual can work and "
+            "A vocational expert evaluates whether - and at what level - an individual can work and "
             "earn following an injury, illness, or other disabling event. At Purinton Analytics, that "
             "evaluation integrates medical evidence, functional capacity, education, work history, "
             "transferable skills, and current labor-market data into a single, well-supported opinion.",
@@ -902,7 +855,7 @@ DETAILS = {
         "schema_name": "Earning Capacity and Wage Loss Analysis",
         "overview": [
             "Lost earning capacity is frequently the largest element of economic damages in an injury "
-            "or employment case — and the most contested. Purinton Analytics establishes pre-injury "
+            "or employment case - and the most contested. Purinton Analytics establishes pre-injury "
             "earning capacity, post-injury earning capacity, and the difference between them, grounded "
             "in the individual's vocational profile and the realities of the labor market.",
             "The analysis distinguishes actual wage loss from the broader concept of lost earning "
@@ -943,15 +896,15 @@ DETAILS = {
         "eyebrow": "Service",
         "h1": "Life care planning",
         "lead": "Comprehensive, evidence-based life care plans that project the future medical and "
-                "support needs — and costs — of individuals with catastrophic or chronic injuries.",
+                "support needs - and costs - of individuals with catastrophic or chronic injuries.",
         "schema_name": "Life Care Planning",
         "overview": [
             "A life care plan is a dynamic, comprehensive document that maps the future care a person "
             "will need as a result of a catastrophic or chronic injury, together with the cost of that "
             "care over their lifetime. It gives attorneys, courts, and families a defensible roadmap "
             "for medical and non-medical needs.",
-            "Purinton Analytics builds life care plans on accepted standards of practice — grounded in "
-            "the medical record, treating-provider recommendations, and researched local costs — so "
+            "Purinton Analytics builds life care plans on accepted standards of practice - grounded in "
+            "the medical record, treating-provider recommendations, and researched local costs - so "
             "the plan reflects genuine need and withstands scrutiny in catastrophic and "
             "non-catastrophic cases alike.",
         ],
@@ -977,7 +930,7 @@ DETAILS = {
             ("What is the purpose of a life care plan?",
              "<p>A life care plan establishes the future care an injured person will need and what that care will cost, providing a defensible basis for damages in litigation and a practical guide for the family and care team.</p>"),
             ("When is a life care plan needed?",
-             "<p>Life care plans are most common in catastrophic injury cases — such as spinal cord injury, traumatic brain injury, amputation, or severe burns — but they are also valuable in chronic and non-catastrophic injury claims where ongoing care is required.</p>"),
+             "<p>Life care plans are most common in catastrophic injury cases - such as spinal cord injury, traumatic brain injury, amputation, or severe burns - but they are also valuable in chronic and non-catastrophic injury claims where ongoing care is required.</p>"),
             ("Is the plan based on the treating physicians' recommendations?",
              "<p>Yes. A defensible life care plan is grounded in the medical record and the recommendations of treating providers, supplemented by accepted standards of practice and researched costs.</p>"),
         ],
@@ -990,7 +943,7 @@ DETAILS = {
         "eyebrow": "Service",
         "h1": "Vocational rehabilitation & medical case management",
         "lead": "Coordinated, clinically informed case management that keeps recovery and return-to-work "
-                "on track — and documents the process along the way.",
+                "on track - and documents the process along the way.",
         "schema_name": "Vocational Rehabilitation and Medical Case Management",
         "overview": [
             "Effective case management aligns medical treatment, rehabilitation, and return-to-work "
@@ -1031,12 +984,12 @@ DETAILS = {
     "/services/economic-damages/": {
         "eyebrow": "Service",
         "h1": "Economic damages analysis",
-        "lead": "Clear calculation of the economic loss flowing from injury or loss — the vocational and "
+        "lead": "Clear calculation of the economic loss flowing from injury or loss - the vocational and "
                 "cost foundation that turns harm into defensible numbers.",
         "schema_name": "Economic Damages Analysis",
         "overview": [
             "Economic damages quantify the financial harm caused by an injury, wrongful termination, or "
-            "death — lost earnings, lost earning capacity, lost benefits, and the cost of future care. "
+            "death - lost earnings, lost earning capacity, lost benefits, and the cost of future care. "
             "Purinton Analytics provides the vocational and life care foundation those calculations "
             "depend on, presented so attorneys and economists can build a complete damages model.",
             "By tying every figure to documented vocational findings and researched costs, the damages "
@@ -1061,7 +1014,7 @@ DETAILS = {
                   ("Used by", "Plaintiff &amp; defense"), ("Service area", "U.S. &amp; Canada")],
         "faqs": [
             ("What economic damages can a vocational expert support?",
-             "<p>A vocational expert provides the foundation for lost earnings, lost earning capacity, and the future cost of care — the elements that typically drive economic damages in injury, employment, and wrongful-death cases.</p>"),
+             "<p>A vocational expert provides the foundation for lost earnings, lost earning capacity, and the future cost of care - the elements that typically drive economic damages in injury, employment, and wrongful-death cases.</p>"),
             ("Do you replace an economist?",
              "<p>No. We provide the vocational and life care foundation; a forensic economist projects those figures to present value. We routinely coordinate with economic experts to deliver a complete, consistent damages model.</p>"),
         ],
@@ -1074,11 +1027,11 @@ DETAILS = {
         "eyebrow": "Practice Area",
         "h1": "Personal injury",
         "lead": "Vocational and life care planning opinions that establish the true cost of catastrophic "
-                "and non-catastrophic injuries — for plaintiff and defense counsel.",
+                "and non-catastrophic injuries - for plaintiff and defense counsel.",
         "schema_name": "Personal Injury Vocational & Life Care Services",
         "overview": [
             "In personal injury litigation, the value of a claim often turns on lost earning capacity "
-            "and the future cost of care. Purinton Analytics helps attorneys establish — or test — both, "
+            "and the future cost of care. Purinton Analytics helps attorneys establish - or test - both, "
             "with objective evaluations grounded in the medical record and labor-market data.",
             "From traumatic brain and spinal cord injuries to orthopedic and soft-tissue claims, we "
             "provide vocational evaluations, life care plans, and the foundation for economic damages, "
@@ -1104,7 +1057,7 @@ DETAILS = {
                   ("Deliverables", "Vocational &amp; life care opinions"), ("Service area", "U.S. &amp; Canada")],
         "faqs": [
             ("What vocational evidence matters most in a personal injury case?",
-             "<p>Objective opinions on whether the claimant can return to work, what they can earn, and what future care will cost — each tied to the medical record and labor-market data — typically have the greatest impact on damages.</p>"),
+             "<p>Objective opinions on whether the claimant can return to work, what they can earn, and what future care will cost - each tied to the medical record and labor-market data - typically have the greatest impact on damages.</p>"),
             ("Do you handle both catastrophic and minor injury cases?",
              "<p>Yes. We provide life care plans and earning capacity analyses for catastrophic injuries and vocational opinions for non-catastrophic injuries where return-to-work and wage loss are at issue.</p>"),
         ],
@@ -1147,7 +1100,7 @@ DETAILS = {
                   ("Focus", "Return-to-work &amp; wage loss"), ("Service area", "U.S. &amp; Canada")],
         "faqs": [
             ("What is a transferable skills analysis?",
-             "<p>A transferable skills analysis identifies the skills a worker has acquired and matches them to other occupations the worker can perform within their medical restrictions — a central question in workers' compensation.</p>"),
+             "<p>A transferable skills analysis identifies the skills a worker has acquired and matches them to other occupations the worker can perform within their medical restrictions - a central question in workers' compensation.</p>"),
             ("What is a labor market survey?",
              "<p>A labor market survey researches whether suitable jobs actually exist in the worker's geographic area, including their availability, requirements, and wages, to support an earning capacity opinion.</p>"),
         ],
@@ -1206,7 +1159,7 @@ DETAILS = {
                 "income-imputation disputes.",
         "schema_name": "Family Law Vocational Services",
         "overview": [
-            "In family law, the question of what a spouse can earn — not just what they do earn — often "
+            "In family law, the question of what a spouse can earn - not just what they do earn - often "
             "drives support and maintenance awards. Purinton Analytics provides neutral, objective "
             "earning capacity and employability evaluations to inform income imputation.",
             "We evaluate education, work history, skills, and the local labor market to opine on a "
@@ -1251,7 +1204,7 @@ def contact_body():
     body = f"""
 {page_hero("Contact", "Request a consultation",
            "Tell us about your matter and we'll discuss how a vocational or life care planning opinion "
-           "can support it — including scope, timeline, and fees.")}
+           "can support it - including scope, timeline, and fees.")}
 
 <section class="section">
   <div class="container split">
@@ -1259,7 +1212,7 @@ def contact_body():
       <form class="contact-form" action="https://api.web3forms.com/submit" method="POST"
             aria-label="Consultation request" data-ajax="web3forms">
         <input type="hidden" name="access_key" value="{SITE['web3forms_key']}">
-        <input type="hidden" name="subject" value="New consultation request — pa-expert.com">
+        <input type="hidden" name="subject" value="New consultation request - pa-expert.com">
         <input type="hidden" name="from_name" value="pa-expert.com contact form">
         <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" style="display:none !important" aria-hidden="true">
         <p class="form-note">Fields marked * are required. Do not include privileged or confidential
@@ -1329,7 +1282,7 @@ def privacy_body():
     <p>Purinton Analytics, LLC ("we", "us") respects your privacy. This policy explains what
        information we collect through pa-expert.com and how we use it.</p>
     <h2>Information we collect</h2>
-    <p>We collect the information you voluntarily provide through our contact form — such as your name,
+    <p>We collect the information you voluntarily provide through our contact form - such as your name,
        firm, email, phone number, and the details of your inquiry. We may also collect standard,
        non-identifying analytics data (such as pages visited) to improve the site.</p>
     <h2>How we use information</h2>
@@ -1403,7 +1356,7 @@ def office_body(o):
       <h2>Serving {o['city']} &amp; {o['region_full']}</h2>
       <p>Purinton Analytics provides objective vocational expert evaluations and life care planning to
          plaintiff and defense counsel in {o['city']} and across {o['region_full']}. Jason Purinton
-         personally handles each engagement &mdash; from records review and evaluation through report
+         personally handles each engagement - from records review and evaluation through report
          writing, deposition, and trial testimony.</p>
       <p>{locality}. Remote evaluation, deposition, and trial testimony are available throughout the
          region and nationwide.</p>
@@ -1445,7 +1398,7 @@ def offices_hub_body():
     body = f"""
 {page_hero("Offices", "Our offices",
            "Purinton Analytics serves attorneys and insurers from offices in Kansas City, St. Louis, "
-           "Denver, and Chicago &mdash; with remote evaluation, deposition, and trial testimony available "
+           "Denver, and Chicago - with remote evaluation, deposition, and trial testimony available "
            "nationwide and in Canada.")}
 
 <section class="section">
@@ -1488,23 +1441,23 @@ def credentials_body():
     leadership = [
         ("American Rehabilitation Economics Association", "President, Board of Directors; Forensic Vocational Expert"),
         ("American Board of Vocational Experts", "Board of Directors; Fellow &amp; Board Certified (2025)"),
-        ("International Association of Rehabilitation Professionals", "Board of Directors, Forensic Section Representative (2022&ndash;2024); Member"),
+        ("International Association of Rehabilitation Professionals", "Board of Directors, Forensic Section Representative (2022-2024); Member"),
         ("Association for Assessment and Research in Counseling", "Member"),
     ]
     lead_html = "".join(f'<li>{icon("check")}<div><strong>{n}</strong><p>{r}</p></div></li>' for n, r in leadership)
 
     edu = [
-        ("M.S., Rehabilitation Counseling", "Emporia State University — 2018&ndash;2019, Phi Kappa Phi"),
-        ("B.S.N., Nursing (Registered Nurse)", "MidAmerica Nazarene University — 2016&ndash;2017"),
-        ("E.M.T.", "Johnson County Community College — 2014"),
-        ("B.S., Business (Communication Studies)", "University of Kansas — 1993&ndash;1997"),
+        ("M.S., Rehabilitation Counseling", "Emporia State University - 2018-2019, Phi Kappa Phi"),
+        ("B.S.N., Nursing (Registered Nurse)", "MidAmerica Nazarene University - 2016-2017"),
+        ("E.M.T.", "Johnson County Community College - 2014"),
+        ("B.S., Business (Communication Studies)", "University of Kansas - 1993-1997"),
     ]
     edu_html = "".join(f'<li><strong>{d}</strong><span>{s}</span></li>' for d, s in edu)
 
     body = f"""
 {page_hero("Credentials", "Credentials, certifications &amp; affiliations",
            "Jason C. Purinton holds clinical, rehabilitation, and forensic credentials across multiple "
-           "states &mdash; the foundation for objective, defensible vocational and life care planning opinions.")}
+           "states - the foundation for objective, defensible vocational and life care planning opinions.")}
 
 <section class="section">
   <div class="container split">
@@ -1527,7 +1480,6 @@ def credentials_body():
         <dl class="aside-dl">
           <dt>Credentials</dt><dd>{SITE['principal_creds']}</dd>
           <dt>Licensure</dt><dd>Missouri, Kansas, Nebraska</dd>
-          <dt>SSA hearings</dt><dd>3,000+ testified</dd>
           <dt>Leadership</dt><dd>President, AREA</dd>
         </dl>
         <a href="/contact/" class="btn btn-block">Request a Consultation</a>
@@ -1537,7 +1489,6 @@ def credentials_body():
   </div>
 </section>
 
-{credential_strip(alt=True)}
 {cta_band()}
 """
     return body, [person_schema(), org_schema()]
@@ -1578,7 +1529,7 @@ def insights_index_body():
     body = f"""
 {page_hero("Insights", "Vocational &amp; life care planning insights",
            "Plain-language explainers on how objective vocational and life care planning opinions are "
-           "built &mdash; for attorneys, insurers, and anyone navigating an injury or disability claim.")}
+           "built - for attorneys, insurers, and anyone navigating an injury or disability claim.")}
 
 <section class="section">
   <div class="container">
@@ -1786,17 +1737,16 @@ def locations_hub_body():
       <a class="card" href="{st['path']}">
         <span class="card-ico">{icon('globe')}</span>
         <h3>{st['name']}</h3>
-        <p>Vocational expert &amp; life care planning services across {len(st['cities'])}+ cities and
-           towns in {st['name']}, including {st['cities'][0]['name']}, {st['cities'][1]['name']},
+        <p>Vocational expert &amp; life care planning services for communities across {st['name']},
+           including {st['cities'][0]['name']}, {st['cities'][1]['name']},
            and {st['cities'][2]['name']}.</p>
         <span class="card-link">View {st['name']} &rarr;</span>
       </a>"""
-    total = sum(len(s["cities"]) for s in STATES)
     body = f"""
 {page_hero("Service Areas", "Vocational expert &amp; life care planning services near you",
-           f"Purinton Analytics serves attorneys and insurers in {len(STATES)} states and more than "
-           f"{total} cities and towns — with objective, defensible vocational and life care planning "
-           "opinions for cases wherever they are venued.")}
+           "Purinton Analytics serves attorneys and insurers across the United States and Canada, with "
+           "objective, defensible vocational and life care planning opinions for cases wherever they "
+           "are venued.")}
 <section class="section">
   <div class="container">
     <div class="section-head">
@@ -1833,13 +1783,13 @@ def state_body(st):
                      f"throughout the state.")
 
     faq_html, faq_schema = faq_block(
-        f"Vocational expert &amp; life care planning FAQs — {st['name']}",
+        f"Vocational expert &amp; life care planning FAQs - {st['name']}",
         [
             (f"Do you provide vocational expert services throughout {st['name']}?",
              f"<p>Yes. Purinton Analytics provides vocational expert evaluations, earning capacity and "
-             f"wage loss analysis, and life care planning for cases throughout {st['name']} — from "
+             f"wage loss analysis, and life care planning for cases throughout {st['name']} - from "
              f"{st['cities'][0]['name']} and {st['cities'][1]['name']} to smaller communities across "
-             f"the state — for both plaintiff and defense counsel.</p>"),
+             f"the state - for both plaintiff and defense counsel.</p>"),
             (f"Are your opinions admissible in {st['courts']}?",
              f"<p>Our opinions are built on accepted vocational and life care planning methodology and "
              f"documented data so they withstand scrutiny in {st['courts']} and before {st['comp']}, "
@@ -1865,8 +1815,8 @@ def state_body(st):
         evaluations and life care plans that translate injury, disability, and loss into clear,
         defensible opinions.{home_note} We are retained by both plaintiff and defense counsel and
         provide testimony in {st['courts']} and before {st['comp']}.</p>
-      <p>Every earning capacity and employability opinion is grounded in {st['name']}'s labor market —
-        local wages, job availability, and occupational requirements — so conclusions reflect the
+      <p>Every earning capacity and employability opinion is grounded in {st['name']}'s labor market -
+        local wages, job availability, and occupational requirements - so conclusions reflect the
         economy your case will be tried in, not national averages.</p>
 
       <h2>Services available in {st['name']}</h2>
@@ -1885,7 +1835,6 @@ def state_body(st):
           <dt>Capital</dt><dd>{st['capital']}</dd>
           <dt>Region</dt><dd>{st['region'].replace('the ', '').title()}</dd>
           <dt>Comp authority</dt><dd>{st['comp']}</dd>
-          <dt>Communities served</dt><dd>{len(st['cities'])}+</dd>
         </dl>
         <a href="/contact/" class="btn btn-block">Request a Consultation</a>
         <a href="tel:{SITE['phone_e164']}" class="card-link">{SITE['phone_display']} &rarr;</a>
@@ -1918,8 +1867,8 @@ CITY_INTRO = [
     "Purinton Analytics provides {city}, {abbr} attorneys and insurers with objective vocational expert "
     "evaluations and life care planning opinions. From employability and earning capacity to the "
     "lifetime cost of care, we deliver litigation-ready analysis for cases venued in and around {city}.",
-    "When a {city}, {state} case turns on what an injured person can earn — or what their future "
-    "care will cost — Purinton Analytics delivers defensible vocational and life care planning "
+    "When a {city}, {state} case turns on what an injured person can earn - or what their future "
+    "care will cost - Purinton Analytics delivers defensible vocational and life care planning "
     "opinions that hold up in {courts}.",
     "Serving {city} and the surrounding {state} legal community, Purinton Analytics offers forensic "
     "vocational evaluations, earning capacity and wage loss analysis, and comprehensive life care plans "
@@ -1933,21 +1882,21 @@ CITY_LOCAL = [
     "wages, job availability, and occupational requirements so an earning capacity opinion reflects the "
     "economy your case will actually be tried in.",
     "A credible vocational opinion depends on local data. We analyze the {city} and broader {state} "
-    "labor market — current wages, transferable skills, and realistic job availability — to "
+    "labor market - current wages, transferable skills, and realistic job availability - to "
     "support employability and earning capacity findings.",
     "Because earning capacity is tied to a specific market, we research the {city} regional economy and "
     "{state} occupational data so our conclusions reflect genuine local opportunities rather than "
     "national averages.",
-    "We tie each {city} earning capacity opinion to local conditions — the wages employers in the "
+    "We tie each {city} earning capacity opinion to local conditions - the wages employers in the "
     "area actually pay and the jobs that are realistically available to the claimant.",
 ]
 
 CITY_TRUST = [
     "Retained on both sides of the aisle, we provide the same objective methodology whether you "
-    "represent the plaintiff or the defense — because a {city} opinion is only as valuable as it is "
+    "represent the plaintiff or the defense - because a {city} opinion is only as valuable as it is "
     "defensible.",
     "From the first records review through deposition and trial testimony, {city} counsel work directly "
-    "with {principal}, {creds} — not a rotating roster of associates.",
+    "with {principal}, {creds} - not a rotating roster of associates.",
     "Our {city} engagements pair clinical insight with board-level vocational certification, connecting "
     "medical evidence, functional capacity, and labor-market data into a single, well-supported opinion.",
     "Whether the matter is catastrophic or non-catastrophic, our {city} opinions are built to withstand "
@@ -1984,8 +1933,8 @@ def city_body(st, city, idx):
              f"{city['name']} case.</p>"),
             (f"How is earning capacity determined for a {city['name']} claimant?",
              f"<p>We combine the individual's medical, educational, and vocational profile with research "
-             f"into the {city['name']}-area labor market — local wages, job availability, and "
-             f"transferable skills — to form an objective, defensible earning capacity opinion.</p>"),
+             f"into the {city['name']}-area labor market - local wages, job availability, and "
+             f"transferable skills - to form an objective, defensible earning capacity opinion.</p>"),
         ],
     )
 
@@ -1993,7 +1942,7 @@ def city_body(st, city, idx):
 {page_hero(city['name'] + ", " + st['abbr'],
            f"Vocational expert &amp; life care planner in {city['name']}, {st['abbr']}",
            f"Objective, defensible vocational evaluations and life care plans for {city['name']} "
-           f"attorneys and insurers — plaintiff and defense, in {st['name']}.")}
+           f"attorneys and insurers - plaintiff and defense, in {st['name']}.")}
 
 <section class="section">
   <div class="container split">
@@ -2088,13 +2037,13 @@ def build_pages():
     pages.append(dict(path="/", title="Vocational Expert & Life Care Planning Services | Purinton Analytics",
                       description="Purinton Analytics provides objective, defensible vocational expert "
                       "evaluations and life care planning for personal injury, workers' compensation, "
-                      "employment, and family law — plaintiff and defense, U.S. & Canada.",
+                      "employment, and family law - plaintiff and defense, U.S. & Canada.",
                       active="/", body=b, schema=s))
 
     b, s = about_body()
     pages.append(dict(path="/about/",
                       title="About Jason C. Purinton, Vocational Expert | Purinton Analytics",
-                      description="Jason C. Purinton, LPC, CRC, CVE, CLCP, ABVE/F, IPEC — a licensed "
+                      description="Jason C. Purinton, LPC, CRC, CVE, CLCP, ABVE/F, IPEC - a licensed "
                       "counselor and board-certified vocational expert and life care planner serving "
                       "attorneys nationwide since 2019.",
                       active="/about/", body=b, schema=s,
@@ -2143,7 +2092,7 @@ def build_pages():
     # Metro offices hub + per-office pages
     b, s = offices_hub_body()
     pages.append(dict(path="/offices/",
-                      title="Our Offices — Kansas City, St. Louis, Denver & Chicago | Purinton Analytics",
+                      title="Our Offices - Kansas City, St. Louis, Denver & Chicago | Purinton Analytics",
                       description="Purinton Analytics serves attorneys from offices in Kansas City, "
                       "St. Louis, Denver, and Chicago, with remote evaluation and testimony nationwide.",
                       active="/offices/", body=b, schema=s,
@@ -2154,14 +2103,14 @@ def build_pages():
         pages.append(dict(path=path,
                           title=f"{o['city']} Vocational Expert & Life Care Planner | Purinton Analytics",
                           description=f"Vocational expert and life care planning services for {o['city']}, "
-                          f"{o['region_full']} attorneys — the {o['city']} office of Purinton Analytics.",
+                          f"{o['region_full']} attorneys - the {o['city']} office of Purinton Analytics.",
                           active="/offices/", body=b, schema=s,
                           breadcrumb=make_breadcrumb(path, f"{o['city']} Office")))
 
     b, s = credentials_body()
     pages.append(dict(path="/credentials/",
                       title="Credentials, Certifications & Affiliations | Purinton Analytics",
-                      description="Jason C. Purinton's credentials — LPC, CRC, CVE, CLCP, ABVE/F, IPEC, FVE, RN — "
+                      description="Jason C. Purinton's credentials - LPC, CRC, CVE, CLCP, ABVE/F, IPEC, FVE, RN - "
                       "with state qualifications in Missouri, Kansas, and Nebraska, memberships, and leadership.",
                       active="/credentials/", body=b, schema=s,
                       breadcrumb=make_breadcrumb("/credentials/", "Credentials")))
@@ -2169,7 +2118,7 @@ def build_pages():
     # Insights index + articles
     b, s = insights_index_body()
     pages.append(dict(path="/insights/",
-                      title="Insights — Vocational Expert & Life Care Planning | Purinton Analytics",
+                      title="Insights - Vocational Expert & Life Care Planning | Purinton Analytics",
                       description="Plain-language explainers on how objective vocational and life care "
                       "planning opinions are built, from Purinton Analytics.",
                       active="/insights/", body=b, schema=s,
@@ -2193,7 +2142,7 @@ def build_pages():
 
     b, s = privacy_body()
     pages.append(dict(path="/privacy/", title="Privacy Policy | Purinton Analytics",
-                      description="Privacy policy for pa-expert.com — how Purinton Analytics handles "
+                      description="Privacy policy for pa-expert.com - how Purinton Analytics handles "
                       "information submitted through this website.",
                       active="", body=b, schema=s, noindex=False))
 
@@ -2217,7 +2166,7 @@ def build_pages():
         pages.append(dict(path=st["path"],
                           title=f"{st['name']} Vocational Expert & Life Care Planner | Purinton Analytics",
                           description=f"Vocational expert evaluations, earning capacity & wage loss "
-                          f"analysis, and life care planning across {st['name']} — personal injury, "
+                          f"analysis, and life care planning across {st['name']} - personal injury, "
                           f"workers' comp, employment & family law. Plaintiff & defense.",
                           active="/locations/", body=b, schema=s,
                           breadcrumb=location_breadcrumb(st)))
@@ -2228,7 +2177,7 @@ def build_pages():
                               title=f"Vocational Expert & Life Care Planner in {city['name']}, "
                                     f"{st['abbr']} | Purinton Analytics",
                               description=f"Objective vocational expert evaluations and life care plans "
-                              f"for {city['name']}, {st['name']} attorneys — personal injury, workers' "
+                              f"for {city['name']}, {st['name']} attorneys - personal injury, workers' "
                               f"comp, employment & family law. Plaintiff & defense; in-person & remote.",
                               active="/locations/", body=b, schema=s,
                               breadcrumb=location_breadcrumb(st, city)))
@@ -2295,7 +2244,7 @@ def write_meta_files(pages):
               f"Sitemap: {SITE['domain']}/sitemap.xml\n")
     open(os.path.join(ROOT, "robots.txt"), "w").write(robots)
 
-    # llms.txt — GEO / AI discovery
+    # llms.txt - GEO / AI discovery
     practice_lines = "\n".join(
         f"- [{n.replace('&amp;', '&')}]({SITE['domain']}{h})" for n, h, _ in PRACTICE_AREAS
     )
@@ -2335,14 +2284,14 @@ Meetings by appointment; remote evaluation, deposition, and trial testimony nati
 {office_lines}
 
 ## Service Areas
-Purinton Analytics serves attorneys and insurers across {len(STATES)} states and {sum(len(s["cities"]) for s in STATES)}+ cities and towns. Remote evaluation, deposition, and trial testimony are available throughout.
-{chr(10).join(f"- [{s['name']}]({SITE['domain']}{s['path']}): vocational expert & life care planning services in {s['cities'][0]['name']}, {s['cities'][1]['name']}, {s['cities'][2]['name']}, and {len(s['cities'])-3}+ more communities." for s in STATES)}
+Purinton Analytics serves attorneys and insurers across the United States and Canada. Remote evaluation, deposition, and trial testimony are available throughout.
+{chr(10).join(f"- [{s['name']}]({SITE['domain']}{s['path']}): vocational expert & life care planning services in {s['cities'][0]['name']}, {s['cities'][1]['name']}, {s['cities'][2]['name']}, and other communities statewide." for s in STATES)}
 
 ## Insights
 {insight_lines}
 
 ## About
-- [About Jason C. Purinton]({SITE['domain']}/about/): Credentials — Licensed Professional Counselor (LPC), Certified Rehabilitation Counselor (CRC), Certified Vocational Evaluator (CVE), Certified Life Care Planner (CLCP), Fellow of the American Board of Vocational Experts (ABVE/F), Forensic Vocational Expert (FVE), International Psychometric Evaluator Certified (IPEC), Registered Nurse (RN). Based in Kansas City, Missouri; offices in St. Louis, Denver, and Chicago. President of the Board of Directors of the American Rehabilitation Economics Association; Board of Directors of the American Board of Vocational Experts.
+- [About Jason C. Purinton]({SITE['domain']}/about/): Credentials - Licensed Professional Counselor (LPC), Certified Rehabilitation Counselor (CRC), Certified Vocational Evaluator (CVE), Certified Life Care Planner (CLCP), Fellow of the American Board of Vocational Experts (ABVE/F), Forensic Vocational Expert (FVE), International Psychometric Evaluator Certified (IPEC), Registered Nurse (RN). Based in Kansas City, Missouri; offices in St. Louis, Denver, and Chicago. President of the Board of Directors of the American Rehabilitation Economics Association; Board of Directors of the American Board of Vocational Experts.
 - [Credentials & Affiliations]({SITE['domain']}/credentials/): Full credentials, state qualifications (Missouri, Kansas, Nebraska), memberships, and leadership.
 """
     open(os.path.join(ROOT, "llms.txt"), "w").write(llms)
@@ -2374,7 +2323,7 @@ def main():
         print("  ", w)
     print("Wrote sitemap.xml, robots.txt, llms.txt, site.webmanifest, CNAME")
     if not SITE["web3forms_key"]:
-        print("WARNING: SITE['web3forms_key'] is empty — the contact form will not "
+        print("WARNING: SITE['web3forms_key'] is empty - the contact form will not "
               "deliver until a real Web3Forms access key is set (see launch checklist).")
 
 
