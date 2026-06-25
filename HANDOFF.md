@@ -1,8 +1,22 @@
-# Purinton Analytics (pa-expert.com) — Handoff
+# Purinton Analytics (pa-expert.com) - Handoff
+
+> **UPDATE 2026-06-24 (overhaul):** A full brand + content overhaul has since
+> landed and supersedes much of this document. The §3 "Do before launch" items
+> are now DONE: real logo, navy+orange+teal palette, branded favicon + 1200x630
+> OG PNG, real headshots/office skylines, and the contact form wired to
+> **Web3Forms** (key set). Email is `jason@pa-expert.com`. Credentials are now
+> **LPC, CRC, CVE, CLCP, ABVE/F, IPEC** (President of the AREA board; ABVE
+> board member). Added: 9 practice-area pages, 4 metro office pages, a
+> Credentials page, and an Insights section. **Content standards now apply -
+> see `CLAUDE.md`:** objective tone, no em dashes, no stat counts, no
+> credential-logo strips. The audit's location/schema improvements (per-city
+> geo, state-economy paragraphs, varied FAQs) are integrated. Still pending:
+> confirmed office street addresses (offices are "by appointment" until then).
+> The sections below describe the pre-overhaul state and remain for reference.
 
 A fast, fully static, SEO- and GEO-optimized marketing site for **Purinton
-Analytics, LLC** — forensic vocational expert & life care planning practice
-(principal: Jason C. Purinton, LPC, CRC, CVE, FVE, ABVE/F, IPEC).
+Analytics, LLC** - forensic vocational expert & life care planning practice
+(principal: Jason C. Purinton, LPC, CRC, CVE, CLCP, ABVE/F, IPEC).
 
 - **Branch:** `claude/pa-expert-website-redesign-8wb1bh` (merged into `main`)
 - **Pages:** 343 total — home, about, 5 service pages, practice-areas hub + 4
