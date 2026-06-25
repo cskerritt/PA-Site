@@ -133,6 +133,14 @@ def head(page):
         '<script type="application/ld+json">%s</script>' % j for j in page.get("schema", [])
     )
 
+    # Per-page geo signals: location pages override with their own city/state
+    # (default = the Kansas City home metro). No coordinates are emitted, since
+    # we publish no confirmed street address for any office.
+    geo_region = page.get("geo_region", "US-" + SITE["region"])
+    geo_place = page.get("geo_placename", f"{SITE['city']}, {SITE['region_full']}")
+    geo_block = (f'<meta name="geo.region" content="{geo_region}">\n'
+                 f'<meta name="geo.placename" content="{esc(geo_place)}">')
+
     breadcrumb_html = ""
     if page.get("breadcrumb"):
         items = []
@@ -158,8 +166,7 @@ def head(page):
 <link rel="canonical" href="{canonical}">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
 <meta name="author" content="{SITE['principal']}, {SITE['principal_creds']}">
-<meta name="geo.region" content="US-MO">
-<meta name="geo.placename" content="Kansas City, Missouri">
+{geo_block}
 
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="{esc(SITE['name'])}">
@@ -511,7 +518,7 @@ def home_body():
       </div>
       <div class="hero-chips">{chips}</div>
     </div>
-    <aside class="hero-card" aria-label="About the expert">
+    <aside class="hero-card" aria-label="About Jason C. Purinton, vocational expert">
       <div class="hero-card-top">
         <img class="hero-photo" src="/assets/img/brand/Jason-Purinton-2025-BW.webp" alt="Jason C. Purinton" width="655" height="450" loading="eager">
         <div>
@@ -1267,7 +1274,12 @@ def contact_body():
 """
     schema = (
         '{"@context":"https://schema.org","@type":"ContactPage","name":"Contact Purinton Analytics",'
-        '"url":"%s/contact/","mainEntity":{"@id":"%s/#organization"}}' % (SITE["domain"], SITE["domain"])
+        '"url":"%s/contact/","mainEntity":{"@id":"%s/#organization"},'
+        '"about":{"@type":"ProfessionalService","name":"%s","telephone":"%s","email":"%s",'
+        '"contactPoint":[{"@type":"ContactPoint","contactType":"customer service",'
+        '"telephone":"%s","email":"%s","areaServed":["US","CA"],"availableLanguage":"English"}]}}'
+        % (SITE["domain"], SITE["domain"], SITE["name"], SITE["phone_e164"], SITE["email"],
+           SITE["phone_e164"], SITE["email"])
     )
     return body, [org_schema(), schema]
 
@@ -1692,8 +1704,20 @@ STATES = [
     },
 ]
 
+# Accurate, state-level industry context (used to differentiate city-page copy).
+STATE_INDUSTRIES = {
+    "MO": "advanced manufacturing, healthcare, transportation and logistics, and financial services",
+    "IL": "finance, manufacturing, healthcare, transportation and logistics, and agriculture",
+    "MI": "automotive and advanced manufacturing, healthcare, and information technology",
+    "KS": "aviation and aerospace manufacturing, agriculture, healthcare, and energy",
+    "CO": "aerospace, technology, healthcare, energy, and tourism",
+    "NE": "agriculture, insurance and finance, healthcare, and transportation",
+    "ID": "technology and semiconductor manufacturing, agriculture, healthcare, and tourism",
+}
+
 # Deduplicate city slugs within a state and attach slug + path to each.
 for _st in STATES:
+    _st["industries"] = STATE_INDUSTRIES[_st["abbr"]]
     seen = set()
     cities = []
     for c in _st["cities"]:
@@ -1852,7 +1876,8 @@ def state_body(st):
         '"name":"Vocational Expert & Life Care Planning Services in %s",'
         '"serviceType":"Vocational Expert & Life Care Planning",'
         '"url":"%s","provider":{"@id":"%s/#organization"},'
-        '"areaServed":{"@type":"State","name":"%s"},'
+        '"areaServed":{"@type":"State","name":"%s","containedInPlace":'
+        '{"@type":"Country","name":"United States"}},'
         '"description":"Vocational expert evaluations, earning capacity and wage loss analysis, and life '
         'care planning for personal injury, workers compensation, employment, and family law matters '
         'throughout %s."}'
@@ -1874,6 +1899,17 @@ CITY_INTRO = [
     "for plaintiff and defense counsel alike.",
     "For {city}, {state} litigation, Purinton Analytics provides the vocational and life care planning "
     "foundation that turns injury and disability into clear, defensible economic opinions.",
+    "{city} trial attorneys retain Purinton Analytics when a case needs a credible answer to two "
+    "questions: can the injured person still work, and what will their care cost over a lifetime? We "
+    "answer both with objective, well-documented opinions.",
+    "Purinton Analytics supports {city}, {state} counsel with forensic vocational and life care "
+    "planning analysis - the kind of clear, defensible opinion that moves settlement negotiations and "
+    "stands up at trial.",
+    "In {city} and across {state}, Purinton Analytics helps attorneys quantify what an injury truly "
+    "costs - in lost earning capacity and in future medical and support needs - with methodology built "
+    "to survive cross-examination.",
+    "Whether you are building or rebutting a damages claim in {city}, {abbr}, Purinton Analytics "
+    "provides the objective vocational and life care planning foundation your case is measured against.",
 ]
 
 CITY_LOCAL = [
@@ -1888,6 +1924,14 @@ CITY_LOCAL = [
     "national averages.",
     "We tie each {city} earning capacity opinion to local conditions - the wages employers in the "
     "area actually pay and the jobs that are realistically available to the claimant.",
+    "An earning capacity figure is only credible if it reflects where the claimant actually lives and "
+    "works. For {city} matters, we ground our analysis in regional wage data and the jobs realistically "
+    "open to the individual.",
+    "Our {city} evaluations weigh the claimant's functional capacity against the occupations that exist "
+    "in the local and {state} economy - not a generic national job list - so conclusions are realistic "
+    "and defensible.",
+    "For {city} cases we research labor-market conditions directly: which suitable jobs exist nearby, "
+    "what they pay, and what they require, so the earning capacity opinion is anchored to reality.",
 ]
 
 CITY_TRUST = [
@@ -1900,16 +1944,65 @@ CITY_TRUST = [
     "medical evidence, functional capacity, and labor-market data into a single, well-supported opinion.",
     "Whether the matter is catastrophic or non-catastrophic, our {city} opinions are built to withstand "
     "cross-examination and <em>Daubert</em> or <em>Frye</em> scrutiny.",
+    "{city} attorneys work with a single accountable expert from intake through testimony - "
+    "{principal}, {creds} - backed by a clinical counseling and nursing background.",
+    "Every {city} opinion is transparent and reproducible: documented data, stated assumptions, and "
+    "accepted methodology, so another qualified expert reviewing the same record reaches a consistent "
+    "conclusion.",
+    "We approach {city} engagements the same way regardless of who retains us - the objective is an "
+    "opinion that is accurate and defensible, not an advocacy position.",
 ]
+
+CITY_ECON = [
+    "Across {state}, sectors such as {industries} shape the labor market our analyses draw on, "
+    "informing realistic return-to-work and earning capacity conclusions for {city} claimants.",
+    "{state}'s economy - anchored by {industries} - frames the occupational options we weigh when "
+    "evaluating what a {city} claimant can realistically earn.",
+    "Because {state} employment spans {industries}, our {city} earning capacity opinions consider the "
+    "full range of suitable work a claimant could perform in the regional economy.",
+    "We account for the structure of the {state} economy, including {industries}, so that {city} "
+    "employability and wage loss findings reflect genuine local opportunity.",
+]
+
+
+# Localized FAQ pool - a subset is selected per city for variety.
+def city_faq_pool(st, city):
+    c = city["name"]
+    return [
+        (f"Do you provide vocational expert services for {c} cases?",
+         f"<p>Yes. Purinton Analytics provides vocational expert evaluations and testimony for personal "
+         f"injury, workers' compensation, employment, and family law matters in {c} and throughout "
+         f"{st['name']}, for both plaintiff and defense counsel.</p>"),
+        (f"Can you testify in {c}-area courts?",
+         f"<p>Yes. We provide deposition and trial testimony in {st['courts']} and before {st['comp']}, "
+         f"with both in-person and remote options depending on the needs of your {c} case.</p>"),
+        (f"How is earning capacity determined for a {c} claimant?",
+         f"<p>We combine the individual's medical, educational, and vocational profile with research "
+         f"into the {c}-area labor market - local wages, job availability, and transferable skills - "
+         f"to form an objective, defensible earning capacity opinion.</p>"),
+        (f"Do you prepare life care plans for {c} catastrophic injury cases?",
+         f"<p>Yes. We prepare comprehensive, evidence-based life care plans for catastrophic and chronic "
+         f"injury cases in {c}, projecting future medical and support needs and their researched costs "
+         f"over the individual's lifetime.</p>"),
+        (f"Do you work with {c} plaintiff and defense attorneys?",
+         f"<p>Both. Purinton Analytics is retained by plaintiff and defense counsel in {c}. The "
+         f"methodology and conclusions are the same regardless of who retains us.</p>"),
+        (f"How quickly can you take on a {c} case?",
+         f"<p>Turnaround depends on the scope and records involved. Contact us with your {c}, "
+         f"{st['abbr']} matter and we will confirm availability, screen for conflicts, and outline a "
+         f"realistic timeline before any work begins.</p>"),
+    ]
 
 
 def city_body(st, city, idx):
     ctx = dict(city=city["name"], abbr=st["abbr"], state=st["name"], courts=st["courts"],
-               comp=st["comp"], principal=SITE["principal"], creds=SITE["principal_creds"])
+               comp=st["comp"], industries=st["industries"],
+               principal=SITE["principal"], creds=SITE["principal_creds"])
     seed = idx + len(city["name"])
     intro = pick(CITY_INTRO, seed).format(**ctx)
     local = pick(CITY_LOCAL, seed + 1).format(**ctx)
-    trust = pick(CITY_TRUST, seed + 2).format(**ctx)
+    econ = pick(CITY_ECON, seed + 2).format(**ctx)
+    trust = pick(CITY_TRUST, seed + 3).format(**ctx)
 
     near = nearby(st, idx)
     near_html = "".join(f'<a class="pill" href="{c["path"]}">{c["name"]}</a>' for c in near)
@@ -1919,23 +2012,12 @@ def city_body(st, city, idx):
         f'<p>{d}</p></div></li>' for n, h, d in SERVICES
     )
 
+    # Select 4 of the 6 localized FAQs, varied by city so pages differ.
+    pool = city_faq_pool(st, city)
+    start = seed % len(pool)
+    faqs = [pool[(start + k) % len(pool)] for k in range(4)]
     faq_html, faq_schema = faq_block(
-        f"Vocational expert &amp; life care planning in {city['name']}",
-        [
-            (f"Do you provide vocational expert services for {city['name']} cases?",
-             f"<p>Yes. Purinton Analytics provides vocational expert evaluations and testimony for "
-             f"personal injury, workers' compensation, employment, and family law matters in "
-             f"{city['name']} and throughout {st['name']}, for both plaintiff and defense counsel.</p>"),
-            (f"Can you testify in {city['name']}-area courts?",
-             f"<p>Yes. We provide deposition and trial testimony in {st['courts']} and before "
-             f"{st['comp']}, with both in-person and remote options depending on the needs of your "
-             f"{city['name']} case.</p>"),
-            (f"How is earning capacity determined for a {city['name']} claimant?",
-             f"<p>We combine the individual's medical, educational, and vocational profile with research "
-             f"into the {city['name']}-area labor market - local wages, job availability, and "
-             f"transferable skills - to form an objective, defensible earning capacity opinion.</p>"),
-        ],
-    )
+        f"Vocational expert &amp; life care planning in {city['name']}", faqs)
 
     body = f"""
 {page_hero(city['name'] + ", " + st['abbr'],
@@ -1949,6 +2031,7 @@ def city_body(st, city, idx):
       <h2>Vocational &amp; life care planning experts serving {city['name']}</h2>
       <p>{intro}</p>
       <p>{local}</p>
+      <p>{econ}</p>
       <p>{trust}</p>
 
       <h2>How we help {city['name']} attorneys</h2>
@@ -1997,7 +2080,8 @@ def city_body(st, city, idx):
         '"serviceType":"Vocational Expert & Life Care Planning",'
         '"url":"%s","provider":{"@id":"%s/#organization"},'
         '"areaServed":{"@type":"City","name":"%s","containedInPlace":'
-        '{"@type":"State","name":"%s"}},'
+        '{"@type":"State","name":"%s","containedInPlace":'
+        '{"@type":"Country","name":"United States"}}},'
         '"description":"Objective vocational expert evaluations and life care planning for personal '
         'injury, workers compensation, employment, and family law matters in %s, %s."}'
         % (city["name"], st["abbr"], SITE["domain"] + city["path"], SITE["domain"],
@@ -2168,6 +2252,7 @@ def build_pages():
                           f"analysis, and life care planning across {st['name']} - personal injury, "
                           f"workers' comp, employment & family law. Plaintiff & defense.",
                           active="/locations/", body=b, schema=s,
+                          geo_region="US-" + st["abbr"], geo_placename=st["name"],
                           breadcrumb=location_breadcrumb(st)))
 
         for idx, city in enumerate(st["cities"]):
@@ -2179,6 +2264,8 @@ def build_pages():
                               f"for {city['name']}, {st['name']} attorneys - personal injury, workers' "
                               f"comp, employment & family law. Plaintiff & defense; in-person & remote.",
                               active="/locations/", body=b, schema=s,
+                              geo_region="US-" + st["abbr"],
+                              geo_placename=f"{city['name']}, {st['name']}",
                               breadcrumb=location_breadcrumb(st, city)))
 
     return pages
