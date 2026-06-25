@@ -44,9 +44,8 @@ SITE = {
     "facebook": "https://www.facebook.com/Purinton.Analytics",
     "x": "https://x.com/PurintonExpert",
     "theme": "#012262",
-    # Web3Forms access key - paste the real key before launch (see Task 4.3).
-    # Get one free at https://web3forms.com (tie it to jason@pa-expert.com).
-    "web3forms_key": "",
+    # Web3Forms access key (public by design; lives in the client-side form).
+    "web3forms_key": "9a52d3b9-a7cb-4f4f-8479-f0d330f3a6ce",
 }
 
 BUILD_YEAR = date.today().year
