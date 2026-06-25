@@ -1,0 +1,40 @@
+# Caddy static-site config for Railway. Railway injects $PORT and terminates TLS
+# at its edge, so HTTP-only here.
+{
+	admin off
+	persist_config off
+	auto_https off
+}
+
+:{$PORT:8080} {
+	root * /srv
+	encode zstd gzip
+
+	# Caching (later matches win for the same field):
+	#   default everything (HTML + meta files) -> short; assets -> longer.
+	@pages not path /assets/*
+	header @pages Cache-Control "public, max-age=3600"
+	@assets path /assets/*
+	header @assets Cache-Control "public, max-age=86400"
+	@img path /assets/img/*
+	header @img Cache-Control "public, max-age=2592000"
+
+	header {
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		-Server
+	}
+
+	# Clean-URL directories already resolve to index.html via file_server.
+	try_files {path} {path}/ {path}.html
+	file_server
+
+	# Serve the branded 404 page with a real 404 status.
+	handle_errors {
+		@notfound expression {http.error.status_code} == 404
+		handle @notfound {
+			rewrite * /404.html
+			file_server
+		}
+	}
+}
