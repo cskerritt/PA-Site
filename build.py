@@ -13,6 +13,7 @@ to any static host (GitHub Pages, Netlify, Cloudflare Pages, S3, etc.).
 import os
 import re
 import shutil
+import hashlib
 import unicodedata
 from datetime import date
 
@@ -52,6 +53,19 @@ BUILD_YEAR = date.today().year
 LASTMOD = date.today().isoformat()
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
+
+
+def _asset_ver(relpath):
+    """Short content hash for cache-busting; changes only when the file changes."""
+    try:
+        with open(os.path.join(ROOT, relpath), "rb") as fh:
+            return hashlib.sha1(fh.read()).hexdigest()[:8]
+    except OSError:
+        return LASTMOD.replace("-", "")
+
+
+CSS_VER = _asset_ver("assets/css/style.css")
+JS_VER = _asset_ver("assets/js/main.js")
 
 # --------------------------------------------------------------------------- #
 #  Navigation
@@ -192,7 +206,7 @@ def head(page):
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="/assets/css/style.css">
+<link rel="stylesheet" href="/assets/css/style.css?v={CSS_VER}">
 {breadcrumb_html}
 {json_ld}
 </head>
@@ -270,7 +284,7 @@ def footer():
     <p><a href="/sitemap.xml">Sitemap</a> &middot; <a href="/privacy/">Privacy</a></p>
   </div>
 </footer>
-<script src="/assets/js/main.js" defer></script>
+<script src="/assets/js/main.js?v={JS_VER}" defer></script>
 </body>
 </html>
 """
