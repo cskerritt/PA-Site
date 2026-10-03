@@ -34,13 +34,11 @@ export default defineRailway(() =>
         build: { builder: "DOCKERFILE", dockerfilePath: "Dockerfile" },
         // From railway.json (file-only until now): GET / must answer within 60 s before a new
         // deployment takes traffic; restart on failure up to 5 times. The stored service value
-        // is Railway's default (ON_FAILURE, 10 retries), so both restart fields are declared
-        // to pin the file's 5; Railway reports defaults as unset, so a plan may keep showing
-        // restartPolicyType after an apply - Phase B checks that it converges.
+        // is Railway's default (ON_FAILURE, 10 retries), so only the retry count is declared to
+        // pin the file's 5. Railway reports a default as unset, so the policy type (ON_FAILURE, the default) is not declared - declaring it never converges (verified 2026-10-03); only the non-default retry count is.
         deploy: {
           healthcheckPath: "/",
           healthcheckTimeout: 60,
-          restartPolicyType: "ON_FAILURE",
           restartPolicyMaxRetries: 5,
         },
         // Live placement (pull): one replica in us-east4 (Virginia).
